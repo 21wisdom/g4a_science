@@ -187,11 +187,11 @@ function IncheonMap({ doneIds, onOpen }) {
           cy="62"
           rx="12"
           ry="8"
-          fill={isDone('ch2_ocean') ? '#BFE3F5' : '#DDE2E4'}
+          fill={isDone('ch2_ocean') ? '#9FD8C4' : '#DDE2E4'}
           stroke="#453527"
           strokeWidth="1.6"
         />
-        <ellipse cx="44" cy="76" rx="6" ry="4" fill={isDone('ch2_ocean') ? '#BFE3F5' : '#DDE2E4'} stroke="#453527" strokeWidth="1.4" />
+        <ellipse cx="44" cy="76" rx="6" ry="4" fill={isDone('ch2_ocean') ? '#9FD8C4' : '#DDE2E4'} stroke="#453527" strokeWidth="1.4" />
         {/* 영흥도(남) */}
         <path
           d="M62 78 q14 -6 24 4 q2 10 -10 14 q-16 2 -18 -8z"
