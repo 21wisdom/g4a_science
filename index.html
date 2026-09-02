@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#C5DCF3" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <meta
+      name="description"
+      content="인천 SDGs, 사이언스 탐험대 — 인천의 갯벌·바다·기상·에너지 데이터를 직접 실험하며 배우는 초등 3~6학년 SDGs 과학문화 리터러시 게임"
+    />
+    <title>인천 SDGs, 사이언스 탐험대</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Google Analytics 4 (기획서 17.3절, 측정 ID: G-8XTNBN16KG) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8XTNBN16KG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      // 아동 대상 서비스: 광고 개인화·Google 신호 데이터 비활성화(기획서 17.4절)
+      gtag('config', 'G-8XTNBN16KG', {
+        anonymize_ip: true,
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false,
+      });
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

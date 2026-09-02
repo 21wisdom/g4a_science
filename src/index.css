@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-[#F7FBFF] text-mulgomi-line font-sans;
+    /* 저학년 가독성: 본문 최소 16px, 저학년 모드는 root class로 18px 승격(기획서 9장) */
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* 저학년 모드 전역 타이포 확대 */
+  body.grade-low {
+    font-size: 18px;
+  }
+  button {
+    font-family: inherit;
+  }
+  /* 접근성: 키보드 포커스 링을 명확히 */
+  :focus-visible {
+    outline: 3px solid #2e86c1;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* 굵은 다크브라운 외곽선 + 플랫 컬러 = 물곰이 스타일 계승(기획서 9.1) */
+  .card-pop {
+    @apply rounded-2xl border-3 border-mulgomi-line bg-white shadow-pop;
+  }
+  /* 터치 영역 최소 44x44px (기획서 9장 접근성) */
+  .btn {
+    @apply inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-2
+           rounded-xl border-3 border-mulgomi-line px-4 py-2 font-bold
+           shadow-popsm transition-transform active:translate-y-[3px] active:shadow-none
+           disabled:cursor-not-allowed disabled:opacity-50 disabled:active:translate-y-0;
+  }
+  .btn-primary {
+    @apply btn bg-sea text-white;
+  }
+  .btn-soft {
+    @apply btn bg-white text-mulgomi-line;
+  }
+  .btn-accent {
+    @apply btn bg-mulgomi-ear text-mulgomi-line;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full border-2 border-mulgomi-line
+           bg-white px-3 py-1 text-sm font-bold;
+  }
+  .field {
+    @apply w-full rounded-xl border-3 border-mulgomi-line px-4 py-3 text-lg font-bold
+           outline-none focus:border-sea;
+  }
+}
+
+/* 사용자가 모션 최소화를 선택한 경우 애니메이션 억제 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* 슬라이더: 태블릿 터치 대응으로 thumb 크게 */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 14px;
+  border-radius: 999px;
+  border: 3px solid #453527;
+  background: #dceefb;
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: #f4ec8e;
+  border: 3px solid #453527;
+  cursor: pointer;
+}
+input[type='range']::-moz-range-thumb {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: #f4ec8e;
+  border: 3px solid #453527;
+  cursor: pointer;
+}
