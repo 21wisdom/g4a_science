@@ -26,7 +26,26 @@ const BY_KEY = Object.entries(modules).reduce((acc, [path, url]) => {
 const ALIAS = {
   'chapter-ch1_bluecarbon': 'ocean-tidalflat', // 갯벌 챕터 배너 = 갯벌 장면
   'chapter-ch2_ocean': 'ocean-island', // 바다 챕터 배너 = 섬 장면
+  'chapter-ch4_energy': 'concept-wind', // 에너지 챕터 배너 = 해상풍력 장면
+  'chapter-ch5_town': 'concept-solar', // 우리동네 챕터 배너 = 학교 옥상 장면
 };
+
+// 삽화가 담고 있는 장소를 정확히 밝히기 위한 캡션.
+// 특히 국내가 아닌 곳에서 촬영·재구성된 이미지를 인천 설명처럼 보이게 두면 안 되므로,
+// 해당 이미지에는 실제 장소를 반드시 명시한다.
+const CAPTIONS = {
+  'concept-wind': '해상풍력 발전단지 (덴마크)',
+  'chapter-ch4_energy': '해상풍력 발전단지 (덴마크)',
+  'concept-solar': '학교 옥상에 설치된 태양광 발전 설비',
+  'chapter-ch5_town': '학교와 우리 동네',
+  'ocean-pooldeung': '썰물에 드러난 모래톱(풀등)',
+  'ocean-openocean': '육지가 보이지 않는 먼바다',
+};
+
+/** 삽화에 함께 표시할 캡션. 없으면 null */
+export function illustCaption(key) {
+  return CAPTIONS[key] ?? null;
+}
 
 /** 키에 해당하는 삽화 URL. 없으면 null */
 export function illust(key) {

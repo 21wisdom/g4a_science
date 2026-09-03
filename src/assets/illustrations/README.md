@@ -40,21 +40,33 @@
 
 | 파일 | 원본 | 쓰이는 곳 |
 |---|---|---|
-| `ocean-tidalflat.webp` | 인천갯벌 | Ch2 갯벌 카드 + **Ch1 챕터 배너**(별칭) |
-| `ocean-island.webp` | 인천섬(승봉도) | Ch2 섬주변해역 카드 + **Ch2 챕터 배너**(별칭) |
+| `ocean-tidalflat.webp` | 인천갯벌 | Ch2 갯벌 카드 + Ch1 챕터 배너(별칭) |
+| `ocean-island.webp` | 인천섬(승봉도) | Ch2 섬주변해역 카드 + Ch2 챕터 배너(별칭) |
 | `ocean-coast.webp` | 인천연안부두 | Ch2 연안지역 카드 |
 | `ocean-estuary.webp` | 인천한강하구 | Ch2 하구지역 카드 |
+| `ocean-pooldeung.webp` | 대이작도 풀등 | Ch2 풀등 카드 |
+| `ocean-openocean.webp` | 인천 먼바다 | Ch2 먼바다 카드 |
 | `chapter-ch3_data.webp` | 인천기상대 | Ch3 챕터 배너 |
+| `concept-wind.webp` | 해상풍력단지(덴마크) | Ch4 풍력 실험 + Ch4 챕터 배너(별칭) |
+| `concept-solar.webp` | 학교 옥상 태양광 | Ch4 태양광 실험 + Ch5 챕터 배너(별칭) |
+
+Ch2 해양공간 6종과 5개 챕터 배너가 모두 채워졌습니다.
 
 한 장을 두 자리에서 쓸 때는 파일을 복사하지 않고 `src/lib/illustrations.js`의 `ALIAS`에
 매핑합니다.
 
-### 아직 필요한 삽화
+## 캡션 — 장소 오표기 방지
 
-- `ocean-pooldeung.webp` (풀등) — 대이작도 풀등
-- `ocean-openocean.webp` (먼바다)
-- `chapter-ch4_energy.webp`, `concept-wind.webp`, `concept-solar.webp` — 해상풍력·태양광
-- `chapter-ch5_town.webp` — 우리 동네 거리·학교 주변
+삽화가 챕터 장소와 다른 곳을 담고 있으면 `src/lib/illustrations.js`의 `CAPTIONS`에
+실제 장소를 적습니다. 이 값이 챕터의 `place`보다 우선해 배너 캡션으로 표시됩니다.
+
+예를 들어 Ch4의 장소는 영흥도이지만 삽화는 덴마크 해상풍력단지이므로,
+배너에 **"해상풍력 발전단지 (덴마크)"**로 표기됩니다.
+
+## 아직 없는 삽화
+
+- 우리 동네 거리·학교 주변 전용 이미지 — 현재는 학교 옥상 태양광 삽화를 Ch5 배너로 겸용 중입니다.
+  전용 이미지를 넣으면 `chapter-ch5_town.webp`로 저장하고 `ALIAS`에서 해당 줄을 지우면 됩니다.
 
 ## 권장 사양
 

@@ -9,7 +9,7 @@ import { getQuiz } from '../data/quizzes';
 import { DISCUSSIONS, SELF_CHECKS } from '../data/discussions';
 import { BADGES, CHAPTER_MAIN_BADGE } from '../data/chapters';
 import { sdgList } from '../data/sdgs';
-import { chapterImage } from '../lib/illustrations';
+import { chapterImage, illustCaption } from '../lib/illustrations';
 import sfx from '../lib/sound';
 
 const STEPS = [
@@ -223,6 +223,8 @@ function StoryIntro({ story, chapter, onNext }) {
   const last = i >= lines.length - 1;
   // 챕터 대표 삽화가 준비돼 있으면 배너로 보여준다(없으면 생략)
   const hero = chapterImage(chapter.id);
+  // 삽화가 챕터 장소와 다른 곳을 담고 있을 수 있으므로 지정 캡션을 우선한다
+  const heroCaption = illustCaption(`chapter-${chapter.id}`) || chapter.place;
 
   return (
     <div className="grid gap-4">
@@ -230,12 +232,12 @@ function StoryIntro({ story, chapter, onNext }) {
         <figure className="overflow-hidden rounded-2xl border-3 border-mulgomi-line shadow-pop">
           <img
             src={hero}
-            alt={`${chapter.title} — ${chapter.place}`}
+            alt={`${chapter.title} — ${heroCaption}`}
             className="aspect-[5/2] w-full object-cover"
             draggable="false"
           />
           <figcaption className="border-t-3 border-mulgomi-line bg-white px-3 py-1.5 text-sm font-bold">
-            {chapter.place}
+            {heroCaption}
           </figcaption>
         </figure>
       )}

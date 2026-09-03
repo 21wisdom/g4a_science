@@ -3,7 +3,7 @@ import ExperimentShell from '../../components/ExperimentShell';
 import { Panel, Gauge, Verdict } from '../../components/UI';
 import TTSButton from '../../components/TTSButton';
 import useGameStore from '../../store/useGameStore';
-import { conceptImage } from '../../lib/illustrations';
+import { conceptImage, illustCaption } from '../../lib/illustrations';
 import { FORMULAS, INCHEON } from '../../data/datasets';
 import sfx from '../../lib/sound';
 
@@ -147,12 +147,17 @@ export default function WindSim({ chapterId }) {
 
       <Panel title="⚡ 인천의 바람" tone="energy">
         {conceptImage('wind') && (
-          <img
-            src={conceptImage('wind')}
-            alt="바다 위에 세워진 해상풍력 발전기"
-            className="mb-3 h-40 w-full rounded-xl border-3 border-mulgomi-line object-cover"
-            draggable="false"
-          />
+          <figure className="mb-3">
+            <img
+              src={conceptImage('wind')}
+              alt="바다 위에 줄지어 선 해상풍력 발전기"
+              className="aspect-[16/9] w-full rounded-xl border-3 border-mulgomi-line object-cover"
+              draggable="false"
+            />
+            <figcaption className="mt-1 text-center text-xs font-bold text-mulgomi-line/70">
+              {illustCaption('concept-wind')}
+            </figcaption>
+          </figure>
         )}
         <p className="font-bold leading-relaxed">
           인천은 2030년까지 해상풍력 <b>{INCHEON.offshoreWindTarget2030GW}GW</b> 확보를 목표로 하고

@@ -4,7 +4,7 @@ import { Panel, Gauge, Verdict } from '../../components/UI';
 import TTSButton from '../../components/TTSButton';
 import Mascot from '../../components/Mascot';
 import useGameStore from '../../store/useGameStore';
-import { conceptImage } from '../../lib/illustrations';
+import { conceptImage, illustCaption } from '../../lib/illustrations';
 import { FORMULAS, SOLAR_OPTIMAL } from '../../data/datasets';
 import sfx from '../../lib/sound';
 
@@ -156,12 +156,17 @@ export default function SolarSim({ chapterId }) {
             {FORMULAS.solarPower} · 입사각 {incidence.toFixed(1)}° · 빛 {light.label}
           </p>
           {conceptImage('solar') && (
-            <img
-              src={conceptImage('solar')}
-              alt="실제 태양광 발전 시설"
-              className="mt-3 h-36 w-full rounded-xl border-3 border-mulgomi-line object-cover"
-              draggable="false"
-            />
+            <figure className="mt-3 w-full">
+              <img
+                src={conceptImage('solar')}
+                alt="학교 옥상에 넓게 설치된 태양광 패널"
+                className="aspect-[16/9] w-full rounded-xl border-3 border-mulgomi-line object-cover"
+                draggable="false"
+              />
+              <figcaption className="mt-1 text-center text-xs font-bold text-mulgomi-line/70">
+                {illustCaption('concept-solar')}
+              </figcaption>
+            </figure>
           )}
         </div>
       </Panel>

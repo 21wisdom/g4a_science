@@ -65,10 +65,10 @@ export const CH2_CARDS = [
   },
   {
     id: 'c6',
-    title: '육지가 보이지 않는 깊고 푸른 바다',
-    clue: '파도가 크고 수심이 깊으며 멀리 풍력발전기가 서 있습니다.',
+    title: '육지가 보이지 않는 넓은 바다',
+    clue: '사방이 물뿐이고 물빛이 짙어요. 저 멀리 배 한 척만 지나갑니다.',
     answers: ['openocean'],
-    evidence: ['water', 'human'],
+    evidence: ['water'],
     lowTier: false,
     scene: 'openocean',
     visual: { sky: '#BFDFF2', water: '#1F6FA5', ground: '#1F6FA5', items: ['🌊', '💨', '🛥️'] },
