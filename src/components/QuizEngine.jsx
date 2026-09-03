@@ -6,6 +6,39 @@ import sfx from '../lib/sound';
 import useGameStore from '../store/useGameStore';
 
 /**
+ * 문항 id로 보기 순서를 결정적으로 섞는다.
+ *
+ * 정답을 항상 같은 자리에 두면 학생이 내용을 몰라도 위치만 보고 맞힐 수 있어
+ * 평가로서 의미가 없어진다. 문항 id를 seed로 쓰기 때문에 같은 문항은 언제 풀어도
+ * 같은 순서로 보이고(재도전 시 혼란 없음), 문항마다 정답 위치는 서로 달라진다.
+ */
+function seededOrder(id, n) {
+  // FNV-1a로 id를 해싱한 뒤 splitmix32로 난수를 뽑는다.
+  // 단순한 곱셈 해시는 c1l1·c1l2처럼 비슷한 id가 같은 순열로 몰려
+  // 정답이 특정 자리에 편중되므로, 눈사태 효과가 있는 조합을 쓴다.
+  let h = 2166136261 >>> 0;
+  const s = String(id);
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619) >>> 0;
+  }
+  const rand = () => {
+    h = (h + 0x9e3779b9) >>> 0;
+    let z = h;
+    z = Math.imul(z ^ (z >>> 16), 0x21f0aaad) >>> 0;
+    z = Math.imul(z ^ (z >>> 15), 0x735a2d97) >>> 0;
+    z = (z ^ (z >>> 15)) >>> 0;
+    return z / 4294967296;
+  };
+  const order = Array.from({ length: n }, (_, i) => i);
+  for (let i = n - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  return order;
+}
+
+/**
  * 공통 퀴즈 엔진(기획서 7.1)
  * - 문항 타입: multiple_choice / ox / numeric_input / multi_select
  * - 정답 공개 전 "왜 그런지 확인해보기" 힌트 1회 제공
@@ -25,16 +58,22 @@ export default function QuizEngine({ questions, onComplete, title = '판단 퀴�
   const q = questions[idx];
   const total = questions.length;
 
+  // 표시용 보기 순서(섞인 순서) — display index ↔ 원본 index 변환에 쓴다
+  const order = useMemo(
+    () => (Array.isArray(q?.options) ? seededOrder(q.id, q.options.length) : []),
+    [q?.id, q?.options?.length],
+  );
+
   const readAloud = useMemo(() => {
     if (!q) return '';
     const opts =
       q.type === 'ox'
         ? ' 맞으면 O, 틀리면 X를 고르세요.'
         : Array.isArray(q.options)
-          ? ' 보기. ' + q.options.map((o, i) => `${i + 1}번, ${o}.`).join(' ')
+          ? ' 보기. ' + order.map((oi, i) => `${i + 1}번, ${q.options[oi]}.`).join(' ')
           : '';
     return q.prompt + opts;
-  }, [q]);
+  }, [q, order]);
 
   if (!q) return null;
 
@@ -107,15 +146,15 @@ export default function QuizEngine({ questions, onComplete, title = '판단 퀴�
       {/* ── 보기 ───────────────────────────────────────────── */}
       <div className="mt-4 grid gap-2.5">
         {q.type === 'multiple_choice' &&
-          q.options.map((opt, i) => (
+          order.map((oi, i) => (
             <Choice
-              key={i}
-              active={selected === i}
+              key={oi}
+              active={selected === oi}
               locked={isAnswered}
-              onClick={() => !isAnswered && setSelected(i)}
+              onClick={() => !isAnswered && setSelected(oi)}
               marker={`${i + 1}`}
             >
-              {opt}
+              {q.options[oi]}
             </Choice>
           ))}
 
@@ -146,18 +185,18 @@ export default function QuizEngine({ questions, onComplete, title = '판단 퀴�
         {q.type === 'multi_select' && (
           <>
             <p className="text-sm font-bold text-mulgomi-line/70">여러 개를 고를 수 있어요.</p>
-            {q.options.map((opt, i) => (
+            {order.map((oi, i) => (
               <Choice
-                key={i}
-                active={multi.includes(i)}
+                key={oi}
+                active={multi.includes(oi)}
                 locked={isAnswered}
                 onClick={() =>
                   !isAnswered &&
-                  setMulti((m) => (m.includes(i) ? m.filter((x) => x !== i) : [...m, i]))
+                  setMulti((m) => (m.includes(oi) ? m.filter((x) => x !== oi) : [...m, oi]))
                 }
-                marker={multi.includes(i) ? '✓' : '□'}
+                marker={multi.includes(oi) ? '✓' : '□'}
               >
-                {opt}
+                {q.options[oi]}
               </Choice>
             ))}
           </>

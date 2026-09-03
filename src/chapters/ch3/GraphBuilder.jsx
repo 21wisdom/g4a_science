@@ -182,6 +182,9 @@ function HighGraphBuilder({ chapterId }) {
 
       <Panel title="🧮 계산 1. 세 시대의 평균">
         <p className="inline-block rounded-lg bg-data-light px-3 py-1.5 font-bold">{FORMULAS.average}</p>
+        <p className="mt-2 text-sm font-bold text-mulgomi-line/70">
+          2020년대는 &quot;16.9일 이상&quot;이므로, 여기서는 16.9일로 보고 계산합니다.
+        </p>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <input
             className="field max-w-[180px]"
@@ -195,11 +198,12 @@ function HighGraphBuilder({ chapterId }) {
           <button type="button" className="btn-primary" onClick={checkAvg} disabled={!avgInput.trim()}>
             검산하기
           </button>
-          <TTSButton text="6.5일, 16.9일, 16.9일의 평균은 몇 일인가요?" />
+          <TTSButton text="2020년대를 16.9일로 보았을 때 세 시대의 평균은 몇 일인가요?" />
         </div>
         {avgRes !== null && (
           <Verdict correct={avgRes}>
-            (6.5 + 16.9 + 16.9) ÷ 3 = <b>{avg.toFixed(2)}</b>일, 약 {avg.toFixed(1)}일입니다.
+            (6.5 + 16.9 + 16.9) ÷ 3 = <b>{avg.toFixed(2)}</b>일, 약 {avg.toFixed(1)}일입니다. 다만
+            2020년대는 &quot;16.9일 이상&quot;이므로 실제 평균은 이 값보다 클 수 있어요.
           </Verdict>
         )}
       </Panel>
