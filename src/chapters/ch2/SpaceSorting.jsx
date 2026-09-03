@@ -236,7 +236,7 @@ function SceneCard({ card }) {
       <img
         src={photo}
         alt={card.title}
-        className="h-44 w-full rounded-xl border-3 border-mulgomi-line object-cover sm:h-56"
+        className="aspect-[16/9] w-full rounded-xl border-3 border-mulgomi-line object-cover"
         draggable="false"
       />
     );

@@ -36,6 +36,26 @@
 | `concept-wind.webp` | Ch4 풍력발전 시뮬레이터 |
 | `concept-solar.webp` | Ch4 태양광 각도 실험 |
 
+## 현재 들어와 있는 삽화
+
+| 파일 | 원본 | 쓰이는 곳 |
+|---|---|---|
+| `ocean-tidalflat.webp` | 인천갯벌 | Ch2 갯벌 카드 + **Ch1 챕터 배너**(별칭) |
+| `ocean-island.webp` | 인천섬(승봉도) | Ch2 섬주변해역 카드 + **Ch2 챕터 배너**(별칭) |
+| `ocean-coast.webp` | 인천연안부두 | Ch2 연안지역 카드 |
+| `ocean-estuary.webp` | 인천한강하구 | Ch2 하구지역 카드 |
+| `chapter-ch3_data.webp` | 인천기상대 | Ch3 챕터 배너 |
+
+한 장을 두 자리에서 쓸 때는 파일을 복사하지 않고 `src/lib/illustrations.js`의 `ALIAS`에
+매핑합니다.
+
+### 아직 필요한 삽화
+
+- `ocean-pooldeung.webp` (풀등) — 대이작도 풀등
+- `ocean-openocean.webp` (먼바다)
+- `chapter-ch4_energy.webp`, `concept-wind.webp`, `concept-solar.webp` — 해상풍력·태양광
+- `chapter-ch5_town.webp` — 우리 동네 거리·학교 주변
+
 ## 권장 사양
 
 - 가로형 이미지(4:3 또는 16:9), 긴 변 1200px 내외

@@ -25,8 +25,8 @@ export const CH2_CARDS = [
   },
   {
     id: 'c2',
-    title: '게구멍이 가득한 진흙 벌판',
-    clue: '썰물 때 드러난 질척한 흙 위에 구멍이 촘촘합니다.',
+    title: '썰물에 드러난 넓은 진흙 벌판',
+    clue: '물이 빠지자 부드러운 흙바닥이 드러났고, 도요새들이 먹이를 찾고 있어요.',
     answers: ['tidalflat'],
     evidence: ['soil', 'life'],
     lowTier: true,
@@ -35,8 +35,8 @@ export const CH2_CARDS = [
   },
   {
     id: 'c3',
-    title: '방파제와 배가 늘어선 항구',
-    clue: '어선이 정박해 있고 바닥에는 쓰레기도 보입니다.',
+    title: '배가 드나드는 여객선 부두',
+    clue: '여객선과 부두 시설이 길게 늘어서 있고, 사람들이 배를 타고 내려요.',
     answers: ['coast'],
     evidence: ['human'],
     lowTier: true,
@@ -55,8 +55,8 @@ export const CH2_CARDS = [
   },
   {
     id: 'c5',
-    title: '바위 해안과 모래 해변이 함께 있는 섬가',
-    clue: '작은 섬을 둘러싸고 한쪽은 바위, 한쪽은 모래예요.',
+    title: '바다 한가운데 숲이 우거진 섬',
+    clue: '섬 둘레로 모래 해변과 바위가 이어지고, 멀리 다른 섬들도 보여요.',
     answers: ['island'],
     evidence: ['soil', 'life'],
     lowTier: false,

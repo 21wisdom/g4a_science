@@ -231,7 +231,7 @@ function StoryIntro({ story, chapter, onNext }) {
           <img
             src={hero}
             alt={`${chapter.title} — ${chapter.place}`}
-            className="h-40 w-full object-cover sm:h-56"
+            className="aspect-[5/2] w-full object-cover"
             draggable="false"
           />
           <figcaption className="border-t-3 border-mulgomi-line bg-white px-3 py-1.5 text-sm font-bold">

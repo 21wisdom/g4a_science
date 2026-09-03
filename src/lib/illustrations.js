@@ -21,9 +21,18 @@ const BY_KEY = Object.entries(modules).reduce((acc, [path, url]) => {
   return acc;
 }, {});
 
+// 한 장의 삽화를 여러 자리에서 쓰는 경우의 별칭.
+// 같은 파일을 두 번 저장하지 않기 위한 매핑이다.
+const ALIAS = {
+  'chapter-ch1_bluecarbon': 'ocean-tidalflat', // 갯벌 챕터 배너 = 갯벌 장면
+  'chapter-ch2_ocean': 'ocean-island', // 바다 챕터 배너 = 섬 장면
+};
+
 /** 키에 해당하는 삽화 URL. 없으면 null */
 export function illust(key) {
-  return BY_KEY[key] ?? null;
+  if (BY_KEY[key]) return BY_KEY[key];
+  const alias = ALIAS[key];
+  return alias ? (BY_KEY[alias] ?? null) : null;
 }
 
 export const chapterImage = (chapterId) => illust(`chapter-${chapterId}`);
