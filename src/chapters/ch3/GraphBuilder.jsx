@@ -5,6 +5,7 @@ import Mascot from '../../components/Mascot';
 import useGameStore from '../../store/useGameStore';
 import { HEATWAVE, FORMULAS } from '../../data/datasets';
 import sfx from '../../lib/sound';
+import { isNumericAnswerCorrect } from '../../lib/grading';
 
 /**
  * 미니게임 1 — 그래프 빌더 (워크북 3-4 인천 폭염일수)
@@ -137,14 +138,14 @@ function HighGraphBuilder({ chapterId }) {
 
   const checkAvg = () => {
     const v = parseFloat(avgInput);
-    const ok = Number.isFinite(v) && Math.abs(v - avg) <= 0.2;
+    const ok = isNumericAnswerCorrect(v, avg, 0.1);
     setAvgRes(ok);
     logTrial(chapterId, 'graph_builder');
     if (soundOn) (ok ? sfx.correct : sfx.wrong)();
   };
   const checkRate = () => {
     const v = parseFloat(rateInput);
-    const ok = Number.isFinite(v) && Math.abs(v - rate) <= 1;
+    const ok = isNumericAnswerCorrect(v, rate, 0.5);
     setRateRes(ok);
     logTrial(chapterId, 'graph_builder');
     if (soundOn) (ok ? sfx.correct : sfx.wrong)();
@@ -202,8 +203,9 @@ function HighGraphBuilder({ chapterId }) {
         </div>
         {avgRes !== null && (
           <Verdict correct={avgRes}>
-            (6.5 + 16.9 + 16.9) ÷ 3 = <b>{avg.toFixed(2)}</b>일, 약 {avg.toFixed(1)}일입니다. 다만
-            2020년대는 &quot;16.9일 이상&quot;이므로 실제 평균은 이 값보다 클 수 있어요.
+            (6.5 + 16.9 + 16.9) ÷ 3 = <b>{avg.toFixed(2)}</b>일입니다. 반올림한 정수{' '}
+            <b>{Math.round(avg)}</b>도 정답으로 처리했어요. 다만 2020년대는 &quot;16.9일
+            이상&quot;이므로 실제 평균은 이 값보다 클 수 있어요.
           </Verdict>
         )}
       </Panel>

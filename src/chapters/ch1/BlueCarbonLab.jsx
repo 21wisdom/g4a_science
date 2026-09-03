@@ -5,8 +5,9 @@ import { Panel, Verdict } from '../../components/UI';
 import TTSButton from '../../components/TTSButton';
 import Mascot from '../../components/Mascot';
 import useGameStore from '../../store/useGameStore';
-import { BLUE_CARBON_SITES, FORMULAS } from '../../data/datasets';
+import { BLUE_CARBON_SITES, FORMULAS, ORGANIC_CHART_MAX } from '../../data/datasets';
 import sfx from '../../lib/sound';
+import { isNumericAnswerCorrect } from '../../lib/grading';
 
 /**
  * 미니게임 1 — 블루카본 실험실 (워크북 1-5 강열감량법)
@@ -14,9 +15,11 @@ import sfx from '../../lib/sound';
  *   유기물 함량(%) = (W₂ − W₃) ÷ W₂ × 100
  * 저학년: 결과를 막대로 비교만 / 고학년: 공식을 직접 계산해 입력
  */
+export const organicMatter = (w2, w3) => ((w2 - w3) / w2) * 100;
+
 const rand = (min, max) => min + Math.random() * (max - min);
 
-function makeSample(site) {
+function sampleSite(site) {
   const w1 = rand(95, 105); // 젖은 흙 질량(g)
   const water = rand(...site.waterRatioRange);
   const w2 = w1 * (1 - water); // 건조 후
@@ -25,13 +28,30 @@ function makeSample(site) {
   return {
     siteId: site.id,
     site: site.name,
+    organic,
     w1: Number(w1.toFixed(1)),
     w2: Number(w2.toFixed(1)),
     w3: Number(w3.toFixed(1)),
   };
 }
 
-export const organicMatter = (w2, w3) => ((w2 - w3) / w2) * 100;
+/**
+ * 세 지점의 시료를 한 번에 생성한다.
+ *
+ * 지점별 범위가 서로 겹치기 때문에(조상대 1.5~3.5%, 조간대 0.5~2.0%) 각각 독립적으로 뽑으면
+ * 드물게 조간대가 조상대보다 높게 나온다. 그러면 "위쪽일수록 유기물이 많다"는 이 실험의
+ * 학습 목표와 화면 해설이 실제 결과와 어긋난다. 그래서 조상대 > 조간대 > 조하대 순서가
+ * 성립할 때까지 다시 뽑는다. 값 자체는 매번 달라지지만 경향은 항상 같다.
+ */
+function makeBatch() {
+  for (let i = 0; i < 100; i++) {
+    const batch = Object.fromEntries(BLUE_CARBON_SITES.map((s) => [s.id, sampleSite(s)]));
+    const [a, b, c] = BLUE_CARBON_SITES.map((s) => organicMatter(batch[s.id].w2, batch[s.id].w3));
+    if (a > b && b > c) return batch;
+  }
+  // 여기까지 오면 범위 설정이 잘못된 것이므로 마지막 시료를 그대로 쓴다
+  return Object.fromEntries(BLUE_CARBON_SITES.map((s) => [s.id, sampleSite(s)]));
+}
 
 export default function BlueCarbonLab({ chapterId }) {
   const isLow = useGameStore((s) => s.isLow());
@@ -39,6 +59,8 @@ export default function BlueCarbonLab({ chapterId }) {
   const soundOn = useGameStore((s) => s.soundOn);
 
   const [siteId, setSiteId] = useState(BLUE_CARBON_SITES[0].id);
+  // 세 지점 시료를 한 번에 만들어 두고, 채취할 때마다 해당 지점 값을 꺼내 쓴다
+  const [batch] = useState(makeBatch);
   const [sample, setSample] = useState(null);
   const [phase, setPhase] = useState('idle'); // idle | drying | dried | burning | burned
   const [display, setDisplay] = useState(0); // 저울에 표시되는 현재 질량
@@ -71,7 +93,7 @@ export default function BlueCarbonLab({ chapterId }) {
   };
 
   const collect = () => {
-    const s = makeSample(site);
+    const s = batch[site.id];
     setSample(s);
     setPhase('idle');
     setDisplay(s.w1);
@@ -99,7 +121,7 @@ export default function BlueCarbonLab({ chapterId }) {
 
   const chartData = BLUE_CARBON_SITES.map((s) => ({
     name: s.name,
-    organic: results[s.id] ? Number(results[s.id].organic.toFixed(1)) : 0,
+    organic: results[s.id] ? Number(results[s.id].organic.toFixed(2)) : 0,
     measured: Boolean(results[s.id]),
   }));
 
@@ -210,7 +232,7 @@ export default function BlueCarbonLab({ chapterId }) {
               <YAxis
                 stroke="#453527"
                 tick={{ fontSize: 12, fontWeight: 700 }}
-                domain={[0, 15]}
+                domain={[0, ORGANIC_CHART_MAX]}
                 label={{ value: '%', position: 'insideTopLeft', fontSize: 12 }}
               />
               <Tooltip formatter={(v) => `${v}%`} />
@@ -243,7 +265,7 @@ export default function BlueCarbonLab({ chapterId }) {
         { key: 'w1', label: 'W₁(g)' },
         { key: 'w2', label: 'W₂(g)' },
         { key: 'w3', label: 'W₃(g)' },
-        { key: 'organic', label: '유기물 함량(%)' },
+        { key: 'organic', label: '유기물 함량(%)', digits: 2 },
       ]}
       makeRecord={
         phase === 'burned' && sample
@@ -307,7 +329,7 @@ function LowInterpretation({ results }) {
               {s.emoji}
             </span>
             <span className="font-black">{s.name}</span>
-            <span className="text-sm">{results[s.id].organic.toFixed(1)}%</span>
+            <span className="text-sm">{results[s.id].organic.toFixed(2)}%</span>
           </button>
         ))}
       </div>
@@ -315,8 +337,8 @@ function LowInterpretation({ results }) {
         <Verdict correct={pick === best}>
           {pick === best ? (
             <p>
-              맞아요! 막대가 가장 높은 지점이 유기물(탄소)을 가장 많이 품고 있어요. 바닷물에 오래
-              잠겨 있어 유기물이 잘 분해되지 않고 쌓이기 때문이에요.
+              맞아요! 갯벌 위쪽(조상대)은 고운 펄이 쌓이고 염생식물이 자라서 유기물이 많이
+              모여요. 아래쪽(조하대)은 물살이 세서 모래가 많고 가벼운 유기물은 씻겨 나가요.
             </p>
           ) : (
             <p>막대그래프에서 가장 높은 막대를 다시 찾아보세요.</p>
@@ -345,7 +367,7 @@ function HighInterpretation({ sample, phase }) {
   const answer = organicMatter(sample.w2, sample.w3);
   const check = () => {
     const v = parseFloat(String(val).replace(/[^0-9.\-]/g, ''));
-    setRes(Number.isFinite(v) && Math.abs(v - answer) <= 0.5);
+    setRes(Number.isFinite(v) && isNumericAnswerCorrect(v, answer, 0.1));
   };
 
   return (
@@ -377,15 +399,15 @@ function HighInterpretation({ sample, phase }) {
         <Verdict correct={res}>
           <p>
             정답은 ({sample.w2} − {sample.w3}) ÷ {sample.w2} × 100 ={' '}
-            <b>{answer.toFixed(1)}%</b> 입니다.
-            {!res && ' 소수 첫째 자리까지 계산해 다시 입력해 보세요.'}
+            <b>{answer.toFixed(2)}%</b> 입니다. 반올림한 정수 <b>{Math.round(answer)}</b>도 정답으로
+            처리했어요.
           </p>
         </Verdict>
       )}
       {res === false && (
         <div className="mt-3 flex items-center gap-2">
           <Mascot mood="think" size="xs" />
-          <p className="font-bold">먼저 (W₂ − W₃)을 구하고, 그 값을 W₂로 나눈 뒤 100을 곱하세요.</p>
+          <p className="font-bold">먼저 (W₂ − W₃)을 구하고, 그 값을 W₂로 나눈 뒤 100을 곱하세요. 정수로 반올림한 값도 정답이에요.</p>
         </div>
       )}
     </div>

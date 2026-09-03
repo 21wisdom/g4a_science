@@ -22,6 +22,14 @@ export default function SpaceSorting({ chapterId }) {
 
   const cards = useMemo(() => (isLow ? CH2_CARDS.filter((c) => c.lowTier) : CH2_CARDS), [isLow]);
 
+  // 저학년은 실제로 정답이 되는 유형만 보기로 제시한다(검수 결정 04).
+  // 한 번도 정답이 될 수 없는 보기를 늘려 두면 저학년에게 불필요한 인지 부담만 준다.
+  const spaceTypes = useMemo(() => {
+    if (!isLow) return OCEAN_SPACE_TYPES;
+    const used = new Set(cards.flatMap((c) => c.answers));
+    return OCEAN_SPACE_TYPES.filter((t) => used.has(t.id));
+  }, [isLow, cards]);
+
   const [idx, setIdx] = useState(0);
   const [pick, setPick] = useState(null);
   const [result, setResult] = useState(null);
@@ -108,7 +116,7 @@ export default function SpaceSorting({ chapterId }) {
 
       <Panel title="이 장면은 어떤 해양공간일까요?">
         <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          {OCEAN_SPACE_TYPES.map((t) => (
+          {spaceTypes.map((t) => (
             <button
               key={t.id}
               type="button"

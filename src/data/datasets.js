@@ -37,36 +37,45 @@ export const POPULATION = (() => {
   });
 })();
 
-// 워크북 1-5 — 강열감량법 3개 지점(조상대/중간대/조하대)
+// 워크북 1-5 — 강열감량법 3개 지점(조상대/조간대/조하대)
 // W1: 젖은 흙, W2: 건조 후, W3: 태운 후 / 유기물 함량(%) = (W2-W3)/W2*100
-// 실제 실험값이 아니라 "지점별 경향"을 학습하기 위한 시뮬레이션 범위값이다.
+//
+// organicRange는 검수 과정에서 확정한 지점별 유기물 함량 범위다(2026-09 검수).
+// 갯벌 위쪽으로 갈수록 고운 펄이 쌓이고 염생식물이 자라 유기물 함량이 높고,
+// 아래쪽은 조류가 세서 모래질이 우세해 함량이 낮다.
+// 매 시행마다 이 범위 안에서 값을 생성하므로 수치는 달라져도 지점별 경향은 같다.
+//
+// 수분 함량은 학습 목표가 아니므로 세 지점 모두 같은 범위를 쓰고,
+// 화면에서도 지점별 차이를 주장하지 않는다.
 export const BLUE_CARBON_SITES = [
   {
     id: 'upper',
     name: '조상대',
-    desc: '바닷물이 가장 적게 닿는 갯벌 위쪽',
-    emoji: '🏖️',
-    // 유기물 함량이 상대적으로 낮은 구간
-    organicRange: [3.0, 5.0],
-    waterRatioRange: [0.24, 0.3],
+    desc: '바닷물이 가장 적게 닿는 갯벌 위쪽. 고운 펄이 쌓이고 염생식물이 자란다',
+    emoji: '🌾',
+    organicRange: [1.5, 3.5],
+    waterRatioRange: [0.3, 0.4],
   },
   {
     id: 'middle',
-    name: '중간대',
+    name: '조간대',
     desc: '밀물 때 잠기고 썰물 때 드러나는 갯벌 가운데',
     emoji: '🦀',
-    organicRange: [6.0, 8.5],
-    waterRatioRange: [0.3, 0.38],
+    organicRange: [0.5, 2.0],
+    waterRatioRange: [0.3, 0.4],
   },
   {
     id: 'lower',
     name: '조하대',
-    desc: '거의 항상 바닷물에 잠겨 있는 갯벌 아래쪽',
+    desc: '거의 항상 바닷물에 잠겨 있는 갯벌 아래쪽. 조류가 세고 모래질이 많다',
     emoji: '🌊',
-    organicRange: [9.5, 13.0],
-    waterRatioRange: [0.36, 0.45],
+    organicRange: [0.2, 1.0],
+    waterRatioRange: [0.3, 0.4],
   },
 ];
+
+// 유기물 함량 비교 그래프의 세로축 최댓값(%)
+export const ORGANIC_CHART_MAX = 4;
 
 // 워크북 1-6 — 미세플라스틱 형태 분류 4종
 export const MICROPLASTIC_TYPES = [

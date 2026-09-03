@@ -3,6 +3,7 @@ import TTSButton from './TTSButton';
 import { Panel, Verdict } from './UI';
 import Mascot from './Mascot';
 import sfx from '../lib/sound';
+import { isNumericAnswerCorrect } from '../lib/grading';
 import useGameStore from '../store/useGameStore';
 
 /**
@@ -98,7 +99,7 @@ export default function QuizEngine({ questions, onComplete, title = '판단 퀴�
       ok = a === b && multi.length > 0;
     } else if (q.type === 'numeric_input') {
       const v = parseFloat(String(numText).replace(/[^0-9.\-]/g, ''));
-      ok = Number.isFinite(v) && Math.abs(v - q.answer) <= (q.tolerance ?? 0.5);
+      ok = isNumericAnswerCorrect(v, q.answer, q.tolerance ?? 0.5);
     }
 
     if (ok && attempts === 0) setFirstTryCorrect((c) => c + 1);
