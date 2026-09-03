@@ -3,22 +3,44 @@ import React from 'react';
 /**
  * 물곰이 마스코트 (인천과학문화거점센터 공식 캐릭터, 사용 허가 확인 완료)
  *
- * 공식 PNG 에셋 사용법:
- *   src/assets/mascot/ 폴더에 공식 파일(예: 물곰이외곽선-003.png)을 넣기만 하면
- *   아래 glob이 자동으로 감지해 SVG 대신 공식 이미지를 렌더링한다.
- *   에셋이 없을 때는 기획서 9.1절 실측 팔레트/스타일 가이드
- *   (몸통 #C5DCF3 / 귀 #F4EC8E / 아웃라인 #453527 / 얼굴 #FFFFFF / 그림자 #BAC5CA,
- *    두꺼운 다크브라운 외곽선 + 파스텔 플랫컬러, 점 눈·역삼각형 코·물결선 입)
- *   에 맞춰 그린 SVG 대체 이미지가 표시된다.
+ * 공식 PNG 에셋 3종을 표정·포즈별로 사용한다(src/assets/mascot/).
+ *   mulgomi-idle.png   두 손을 든 기본 포즈      → 평상시 안내
+ *   mulgomi-talk.png   한 손을 든 놀란 표정      → 설명·힌트·오답 리액션
+ *   mulgomi-happy.png  손을 흔드는 웃는 표정      → 정답·완료·축하
  *
- * 리액션은 정지 이미지 1장 + CSS 애니메이션 조합으로 구현한다(기획서 9.1 권장안).
+ * 파일을 교체하거나 새 포즈를 추가할 때는 같은 폴더에 `mulgomi-<mood>.png` 형식으로
+ * 넣기만 하면 되고, 코드 수정은 필요 없다. 에셋이 하나도 없으면 기획서 9.1절 팔레트로
+ * 그린 SVG 대체 이미지가 표시된다.
+ *
+ * 리액션(idle 바운스 / 정답 시 점프 / 오답 시 흔들림)은 CSS 애니메이션으로 처리한다.
  */
 const assetModules = import.meta.glob('../assets/mascot/*.{png,svg,webp}', {
   eager: true,
   query: '?url',
   import: 'default',
 });
-const officialAsset = Object.values(assetModules)[0] || null;
+
+// 파일명(확장자 제외, `mulgomi-` 접두사 제거)을 키로 정리한다.
+const ASSETS = Object.entries(assetModules).reduce((acc, [path, url]) => {
+  const base = path.split('/').pop().replace(/\.(png|svg|webp)$/i, '');
+  acc[base.replace(/^mulgomi[-_]?/i, '').toLowerCase() || 'idle'] = url;
+  return acc;
+}, {});
+
+const anyAsset = Object.values(ASSETS)[0] || null;
+
+// mood → 사용할 포즈 에셋 (없으면 순서대로 대체)
+function assetFor(mood) {
+  const chain = {
+    idle: ['idle', 'talk', 'happy'],
+    happy: ['happy', 'idle', 'talk'],
+    think: ['talk', 'idle', 'happy'],
+    sad: ['talk', 'idle', 'happy'],
+    none: ['idle', 'talk', 'happy'],
+  }[mood] || ['idle'];
+  for (const key of chain) if (ASSETS[key]) return ASSETS[key];
+  return anyAsset;
+}
 
 const MOOD_ANIM = {
   idle: 'animate-idlebounce',
@@ -28,20 +50,22 @@ const MOOD_ANIM = {
   none: '',
 };
 
-const SIZES = { xs: 48, sm: 72, md: 110, lg: 150, xl: 200 };
+// 세로가 긴 캐릭터라 높이 기준으로 크기를 정한다.
+const SIZES = { xs: 52, sm: 80, md: 120, lg: 168, xl: 264 };
 
 export default function Mascot({ mood = 'idle', size = 'md', className = '', alt = '물곰이' }) {
   const px = SIZES[size] || SIZES.md;
   const anim = MOOD_ANIM[mood] ?? MOOD_ANIM.idle;
+  const src = assetFor(mood);
 
   return (
     <div
-      className={`relative inline-block shrink-0 ${anim} ${className}`}
-      style={{ width: px, height: px }}
+      className={`relative inline-flex shrink-0 items-end justify-center ${anim} ${className}`}
+      style={{ height: px, width: src ? px * 0.7 : px }}
       aria-hidden="true"
     >
-      {officialAsset ? (
-        <img src={officialAsset} alt={alt} className="h-full w-full object-contain" draggable="false" />
+      {src ? (
+        <img src={src} alt={alt} className="h-full w-auto object-contain" draggable="false" />
       ) : (
         <MulgomiSvg mood={mood} />
       )}
@@ -49,6 +73,7 @@ export default function Mascot({ mood = 'idle', size = 'md', className = '', alt
   );
 }
 
+/** 공식 에셋이 없을 때 쓰는 대체 이미지(기획서 9.1절 실측 팔레트·스타일 가이드 기준) */
 function MulgomiSvg({ mood }) {
   const LINE = '#453527';
   const BODY = '#C5DCF3';
@@ -59,14 +84,9 @@ function MulgomiSvg({ mood }) {
 
   return (
     <svg viewBox="0 0 200 200" className="h-full w-full" role="img" aria-label="물곰이">
-      {/* 그림자 */}
       <ellipse cx="100" cy="182" rx="52" ry="9" fill={SHADOW} opacity="0.55" />
-
-      {/* 귀 (크림 옐로 포인트 컬러) */}
       <circle cx="47" cy="55" r="24" fill={EAR} stroke={LINE} strokeWidth={sw} />
       <circle cx="153" cy="55" r="24" fill={EAR} stroke={LINE} strokeWidth={sw} />
-
-      {/* 몸통 + 머리 (파스텔 블루 메인 컬러) */}
       <path
         d="M100 20c-40 0-64 26-64 60 0 14 5 26 12 35-9 8-14 19-14 32 0 21 25 32 66 32s66-11 66-32c0-13-5-24-14-32 7-9 12-21 12-35 0-34-24-60-64-60z"
         fill={BODY}
@@ -74,15 +94,9 @@ function MulgomiSvg({ mood }) {
         strokeWidth={sw}
         strokeLinejoin="round"
       />
-
-      {/* 발 */}
       <ellipse cx="66" cy="168" rx="20" ry="13" fill={BODY} stroke={LINE} strokeWidth={sw} />
       <ellipse cx="134" cy="168" rx="20" ry="13" fill={BODY} stroke={LINE} strokeWidth={sw} />
-
-      {/* 얼굴(주둥이) 화이트 */}
       <ellipse cx="100" cy="98" rx="42" ry="34" fill={FACE} stroke={LINE} strokeWidth={sw} />
-
-      {/* 눈 — 점 눈, 오답(sad)일 때는 곡선으로 */}
       {mood === 'sad' ? (
         <>
           <path d="M62 74c6-7 16-7 22 0" stroke={LINE} strokeWidth="6" fill="none" strokeLinecap="round" />
@@ -99,11 +113,7 @@ function MulgomiSvg({ mood }) {
           <circle cx="127" cy="76" r="7.5" fill={LINE} />
         </>
       )}
-
-      {/* 코 — 역삼각형 */}
       <path d="M92 92h16l-8 10z" fill={LINE} stroke={LINE} strokeWidth="4" strokeLinejoin="round" />
-
-      {/* 입 — 물결선 */}
       <path
         d="M86 110c5 7 9 7 14 0 5 7 9 7 14 0"
         stroke={LINE}
@@ -111,8 +121,6 @@ function MulgomiSvg({ mood }) {
         fill="none"
         strokeLinecap="round"
       />
-
-      {/* 볼 터치 */}
       <ellipse cx="58" cy="96" rx="8" ry="5" fill="#F6C6C0" opacity="0.75" />
       <ellipse cx="142" cy="96" rx="8" ry="5" fill="#F6C6C0" opacity="0.75" />
     </svg>

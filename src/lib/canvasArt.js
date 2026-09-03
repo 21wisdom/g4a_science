@@ -2,6 +2,34 @@
 // (기획서 6장 Ch5 / 10.1 — 브라우저 내장 기능만 사용, 외부 라이브러리·서버 없음).
 import CONFIG from '../config';
 
+// 인증서·프로젝트 카드에 넣을 물곰이 공식 이미지(없으면 아래 벡터 도형으로 대체)
+const mascotModules = import.meta.glob('../assets/mascot/*.{png,svg,webp}', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+});
+const MASCOT_URL =
+  Object.entries(mascotModules).find(([p]) => /happy/i.test(p))?.[1] ||
+  Object.values(mascotModules)[0] ||
+  null;
+
+let mascotImg = null;
+async function loadMascot() {
+  if (!MASCOT_URL) return null;
+  if (mascotImg) return mascotImg;
+  try {
+    mascotImg = await new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = MASCOT_URL;
+    });
+    return mascotImg;
+  } catch {
+    return null;
+  }
+}
+
 const PALETTE = {
   body: '#C5DCF3',
   ear: '#F4EC8E',
@@ -70,8 +98,31 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight, maxLines = Infinity) {
   return cy;
 }
 
-/** 물곰이 간단 도형(캔버스용) */
-function drawMulgomi(ctx, cx, cy, s) {
+/**
+ * 물곰이를 그린다. 공식 이미지가 로드돼 있으면 그것을, 없으면 벡터 도형을 사용한다.
+ * cx, cy는 중심 좌표이고 s는 배율(1 = 약 150px 높이)이다.
+ */
+function drawMulgomi(ctx, cx, cy, s, flip = false) {
+  if (mascotImg) {
+    const h = 170 * s;
+    const w = (mascotImg.width / mascotImg.height) * h;
+    ctx.save();
+    if (flip) {
+      // 좌우 대칭 배치를 위해 한쪽만 뒤집어 그린다
+      ctx.translate(cx, cy);
+      ctx.scale(-1, 1);
+      ctx.drawImage(mascotImg, -w / 2, -h / 2, w, h);
+    } else {
+      ctx.drawImage(mascotImg, cx - w / 2, cy - h / 2, w, h);
+    }
+    ctx.restore();
+    return;
+  }
+  drawMulgomiVector(ctx, cx, cy, s);
+}
+
+/** 물곰이 간단 도형(캔버스용 대체 이미지) */
+function drawMulgomiVector(ctx, cx, cy, s) {
   const L = PALETTE.line;
   ctx.save();
   ctx.lineWidth = 5 * s;
@@ -124,6 +175,7 @@ function drawMulgomi(ctx, cx, cy, s) {
 /* ── 시민과학 프로젝트 카드 ─────────────────────────────────────────── */
 export async function drawProjectCard(data) {
   await ready();
+  await loadMascot();
   const W = 900;
   const H = 1330;
   const canvas = document.createElement('canvas');
@@ -213,6 +265,7 @@ export async function drawProjectCard(data) {
 /* ── 최종 인증서 ───────────────────────────────────────────────────── */
 export async function drawCertificate({ name, gradeLabel, date, score, total, badges = [] }) {
   await ready();
+  await loadMascot();
   const W = 1240;
   const H = 877;
   const canvas = document.createElement('canvas');
@@ -296,7 +349,7 @@ export async function drawCertificate({ name, gradeLabel, date, score, total, ba
   ctx.fillText(CONFIG.organizer, W / 2, 812);
 
   drawMulgomi(ctx, 148, 700, 0.85);
-  drawMulgomi(ctx, W - 148, 700, 0.85);
+  drawMulgomi(ctx, W - 148, 700, 0.85, true);
 
   return canvas.toDataURL('image/png');
 }

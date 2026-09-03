@@ -12,7 +12,11 @@ export function Panel({ title, right, children, className = '', tone = 'white' }
   return (
     <section className={`card-pop ${tones[tone] || tones.white} p-4 sm:p-5 ${className}`}>
       {(title || right) && (
-        <header className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <header
+          className={`mb-3 flex flex-wrap items-center gap-2 ${
+            title ? 'justify-between' : 'justify-end'
+          }`}
+        >
           {title && <h2 className="text-lg font-black sm:text-xl">{title}</h2>}
           {right}
         </header>
