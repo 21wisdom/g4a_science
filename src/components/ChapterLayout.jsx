@@ -9,6 +9,7 @@ import { getQuiz } from '../data/quizzes';
 import { DISCUSSIONS, SELF_CHECKS } from '../data/discussions';
 import { BADGES, CHAPTER_MAIN_BADGE } from '../data/chapters';
 import { sdgList } from '../data/sdgs';
+import { chapterImage } from '../lib/illustrations';
 import sfx from '../lib/sound';
 
 const STEPS = [
@@ -92,7 +93,7 @@ export default function ChapterLayout({ chapter, story, briefing, experiments = 
       </div>
 
       {/* ── 1단계: 스토리 인트로 ────────────────────────────── */}
-      {step === 0 && <StoryIntro story={story} onNext={goNext} />}
+      {step === 0 && <StoryIntro story={story} chapter={chapter} onNext={goNext} />}
 
       {/* ── 2단계: 개념 브리핑 ─────────────────────────────── */}
       {step === 1 && (
@@ -216,13 +217,28 @@ export default function ChapterLayout({ chapter, story, briefing, experiments = 
   );
 }
 
-function StoryIntro({ story, onNext }) {
+function StoryIntro({ story, chapter, onNext }) {
   const [i, setI] = useState(0);
   const lines = story?.lines || [];
   const last = i >= lines.length - 1;
+  // 챕터 대표 삽화가 준비돼 있으면 배너로 보여준다(없으면 생략)
+  const hero = chapterImage(chapter.id);
 
   return (
     <div className="grid gap-4">
+      {hero && (
+        <figure className="overflow-hidden rounded-2xl border-3 border-mulgomi-line shadow-pop">
+          <img
+            src={hero}
+            alt={`${chapter.title} — ${chapter.place}`}
+            className="h-40 w-full object-cover sm:h-56"
+            draggable="false"
+          />
+          <figcaption className="border-t-3 border-mulgomi-line bg-white px-3 py-1.5 text-sm font-bold">
+            {chapter.place}
+          </figcaption>
+        </figure>
+      )}
       <Panel tone="sea" right={<TTSButton text={lines[i]} />}>
         <MascotSpeech mood={i % 2 === 0 ? 'idle' : 'talk'} size="lg">
           <p className="text-lg font-bold leading-relaxed sm:text-xl">{lines[i]}</p>

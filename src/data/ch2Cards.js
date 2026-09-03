@@ -1,7 +1,8 @@
 // Ch2 공간 판별 카드 소팅용 데이터(워크북 2-3 활동).
 // answers 배열에 정답이 2개 이상인 카드가 있는 이유: 워크북 원문처럼 "하나의 정답이 아니어도 됨"을
 // 반영해, 두 유형이 공존 가능한 장면은 두 답 모두 정답으로 처리한다(기획서 6장 Ch2).
-// visual: 일러스트 대체용 SVG 장면 파라미터(하늘/물/땅 색 + 배치 요소)
+// visual: SVG 장면 파라미터(하늘/물/땅 색 + 배치 요소) — 실제 삽화가 없을 때 쓰이는 대체 이미지
+// scene: src/assets/illustrations/ocean-<scene>.webp 가 있으면 SVG 대신 그 삽화를 쓴다
 
 export const EVIDENCE_TAGS = [
   { id: 'soil', label: '흙의 성질', emoji: '🟤' },
@@ -19,6 +20,7 @@ export const CH2_CARDS = [
     answers: ['estuary'],
     evidence: ['plant', 'water'],
     lowTier: true,
+    scene: 'estuary',
     visual: { sky: '#CFE7F7', water: '#7FB2D6', ground: '#B8A66B', items: ['🌾', '🌾', '💧'] },
   },
   {
@@ -28,6 +30,7 @@ export const CH2_CARDS = [
     answers: ['tidalflat'],
     evidence: ['soil', 'life'],
     lowTier: true,
+    scene: 'tidalflat',
     visual: { sky: '#D9EEF8', water: '#9CC7DE', ground: '#8B6B47', items: ['🦀', '🐚', '🦆'] },
   },
   {
@@ -37,6 +40,7 @@ export const CH2_CARDS = [
     answers: ['coast'],
     evidence: ['human'],
     lowTier: true,
+    scene: 'coast',
     visual: { sky: '#CDE6F5', water: '#4E8FBB', ground: '#9AA5AB', items: ['⚓', '🚤', '🗑️'] },
   },
   {
@@ -46,6 +50,7 @@ export const CH2_CARDS = [
     answers: ['pooldeung'],
     evidence: ['soil', 'water'],
     lowTier: true,
+    scene: 'pooldeung',
     visual: { sky: '#D6EDF9', water: '#5FA4CC', ground: '#E7D8A8', items: ['🏜️', '🐦'] },
   },
   {
@@ -55,6 +60,7 @@ export const CH2_CARDS = [
     answers: ['island'],
     evidence: ['soil', 'life'],
     lowTier: false,
+    scene: 'island',
     visual: { sky: '#CFE8F6', water: '#3F87B5', ground: '#A79E8E', items: ['🏝️', '🪨', '🐟'] },
   },
   {
@@ -64,6 +70,7 @@ export const CH2_CARDS = [
     answers: ['openocean'],
     evidence: ['water', 'human'],
     lowTier: false,
+    scene: 'openocean',
     visual: { sky: '#BFDFF2', water: '#1F6FA5', ground: '#1F6FA5', items: ['🌊', '💨', '🛥️'] },
   },
   {

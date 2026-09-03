@@ -4,6 +4,7 @@ import { Panel, Gauge, Verdict } from '../../components/UI';
 import TTSButton from '../../components/TTSButton';
 import Mascot from '../../components/Mascot';
 import useGameStore from '../../store/useGameStore';
+import { conceptImage } from '../../lib/illustrations';
 import { FORMULAS, SOLAR_OPTIMAL } from '../../data/datasets';
 import sfx from '../../lib/sound';
 
@@ -154,6 +155,14 @@ export default function SolarSim({ chapterId }) {
           <p className="mt-2 text-center text-sm font-bold">
             {FORMULAS.solarPower} · 입사각 {incidence.toFixed(1)}° · 빛 {light.label}
           </p>
+          {conceptImage('solar') && (
+            <img
+              src={conceptImage('solar')}
+              alt="실제 태양광 발전 시설"
+              className="mt-3 h-36 w-full rounded-xl border-3 border-mulgomi-line object-cover"
+              draggable="false"
+            />
+          )}
         </div>
       </Panel>
     </>

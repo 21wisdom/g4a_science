@@ -181,6 +181,22 @@ src/
 하면 `Mascot.jsx`가 파일명으로 자동 인식합니다. 코드 수정은 필요 없습니다.
 자세한 내용은 `src/assets/mascot/README.md`를 참고하세요.
 
+## 6-2. 배경 삽화
+
+`src/assets/illustrations/`에 파일을 넣으면 `src/lib/illustrations.js`가 파일명으로 자동
+인식합니다. **아직 없는 삽화는 기존 SVG 장면으로 자동 대체**되므로 한 장씩 채워 넣어도 앱은
+항상 정상 동작합니다. 자세한 파일명 규칙은 `src/assets/illustrations/README.md`를 참고하세요.
+
+| 파일명 | 쓰이는 곳 |
+|---|---|
+| `chapter-<챕터id>.webp` | 스토리 인트로 상단 배너 |
+| `ocean-<공간유형id>.webp` | Ch2 해양공간 판별 카드 (estuary·tidalflat·coast·island·pooldeung·openocean) |
+| `concept-wind.webp` / `concept-solar.webp` | Ch4 풍력·태양광 실험 화면 |
+
+삽화가 특정 지역·시설을 담고 있다면 화면 설명과 어긋나지 않는지 확인이 필요합니다.
+예를 들어 해외에서 촬영·재구성된 해상풍력 이미지를 인천 영흥도 설명에 그대로 쓰지 않고,
+캡션에 실제 장소를 밝힙니다.
+
 ## 7. 설문·접속 로그 (기획서 17장)
 
 - **설문**: 최종 인증서 화면 하단과 설정 화면에 Google Form 버튼을 배치했습니다.

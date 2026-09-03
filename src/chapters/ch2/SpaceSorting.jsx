@@ -5,6 +5,7 @@ import Mascot from '../../components/Mascot';
 import useGameStore from '../../store/useGameStore';
 import { OCEAN_SPACE_TYPES } from '../../data/datasets';
 import { CH2_CARDS, EVIDENCE_TAGS } from '../../data/ch2Cards';
+import { oceanSceneImage } from '../../lib/illustrations';
 import sfx from '../../lib/sound';
 
 /**
@@ -223,8 +224,27 @@ export default function SpaceSorting({ chapterId }) {
   );
 }
 
-/** 사진 대신 사용하는 SVG 장면 카드(저작권 확인이 필요한 원본 사진을 쓰지 않기 위함) */
+/**
+ * 장면 카드.
+ * src/assets/illustrations/ocean-<scene>.webp 삽화가 준비돼 있으면 그것을 쓰고,
+ * 아직 없으면 아래 SVG 장면으로 대체한다(저작권 확인이 필요한 원본 사진은 쓰지 않는다).
+ */
 function SceneCard({ card }) {
+  const photo = card.scene ? oceanSceneImage(card.scene) : null;
+  if (photo) {
+    return (
+      <img
+        src={photo}
+        alt={card.title}
+        className="h-44 w-full rounded-xl border-3 border-mulgomi-line object-cover sm:h-56"
+        draggable="false"
+      />
+    );
+  }
+  return <SvgScene card={card} />;
+}
+
+function SvgScene({ card }) {
   const { sky, water, ground, items } = card.visual;
   return (
     <div
