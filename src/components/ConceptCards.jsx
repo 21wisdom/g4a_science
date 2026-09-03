@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Panel } from './UI';
 import TTSButton from './TTSButton';
+import Mascot from './Mascot';
 
 /**
  * 개념 브리핑용 인터랙티브 카드(기획서 5.3 2단계).
@@ -12,6 +13,14 @@ export default function ConceptCards({ title = '개념 브리핑', cards = [], t
 
   return (
     <Panel title={title} tone={tone}>
+      {/* 개념 설명 구간에서는 선생님 포즈 물곰이가 안내한다 */}
+      <div className="mb-3 flex items-center gap-3">
+        <Mascot mood="teach" size="sm" />
+        <p className="flex-1 font-bold leading-snug">
+          카드를 눌러 하나씩 확인해 보세요. 🔊 버튼을 누르면 읽어줍니다.
+        </p>
+      </div>
+
       <div className="grid gap-2.5">
         {cards.map((c, i) => {
           const isOpen = open === i;

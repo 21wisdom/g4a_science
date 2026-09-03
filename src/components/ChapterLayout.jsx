@@ -224,7 +224,7 @@ function StoryIntro({ story, onNext }) {
   return (
     <div className="grid gap-4">
       <Panel tone="sea" right={<TTSButton text={lines[i]} />}>
-        <MascotSpeech mood={i % 2 === 0 ? 'idle' : 'think'} size="lg">
+        <MascotSpeech mood={i % 2 === 0 ? 'idle' : 'talk'} size="lg">
           <p className="text-lg font-bold leading-relaxed sm:text-xl">{lines[i]}</p>
           <p className="mt-3 text-sm font-bold text-mulgomi-line/60">
             {i + 1} / {lines.length}

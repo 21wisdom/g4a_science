@@ -2,6 +2,7 @@ import React from 'react';
 import Mascot from '../components/Mascot';
 import { Panel, SdgBadge } from '../components/UI';
 import useGameStore from '../store/useGameStore';
+import IncheonMap from '../components/IncheonMap';
 import { CHAPTERS, BADGES } from '../data/chapters';
 import { sdgList } from '../data/sdgs';
 import CONFIG from '../config';
@@ -64,7 +65,7 @@ export default function HubMap() {
       </div>
 
       {/* 인천 지도 */}
-      <div className="relative mb-5 overflow-hidden rounded-2xl border-3 border-mulgomi-line shadow-pop">
+      <div className="relative mx-auto mb-5 w-full max-w-[620px] overflow-hidden rounded-2xl border-3 border-mulgomi-line shadow-pop">
         <IncheonMap doneIds={doneIds} onOpen={openChapter} />
       </div>
 
@@ -144,88 +145,6 @@ export default function HubMap() {
       <p className="mt-6 text-center text-xs font-bold text-mulgomi-line/60">
         {CONFIG.organizer} · 마스코트 물곰이 · 진행 기록은 이 기기에만 저장됩니다
       </p>
-    </div>
-  );
-}
-
-/** 인천 지도 일러스트(SVG) — 챕터 완료 시 해당 지역이 컬러로 복원된다 */
-function IncheonMap({ doneIds, onOpen }) {
-  const isDone = (id) => doneIds.includes(id);
-
-  return (
-    <div className="relative w-full" style={{ aspectRatio: '16 / 10', background: '#DCEEFB' }}>
-      <svg viewBox="0 0 160 100" className="absolute inset-0 h-full w-full" role="img" aria-label="인천 지도">
-        {/* 바다 */}
-        <rect x="0" y="0" width="160" height="100" fill="#BEDFF2" />
-        {[18, 38, 58, 78].map((y) => (
-          <path
-            key={y}
-            d={`M0 ${y} q 8 -3 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0`}
-            stroke="#A8D2EA"
-            strokeWidth="1.4"
-            fill="none"
-          />
-        ))}
-
-        {/* 본토(인천 시가지) */}
-        <path
-          d="M96 6 q22 4 30 18 t 12 30 q4 18 -8 34 q-16 8 -34 4 q-14 -6 -18 -22 q-2 -20 4 -38 q4 -18 14 -26z"
-          fill={isDone('ch3_data') ? '#CFE9CF' : '#DDE2E4'}
-          stroke="#453527"
-          strokeWidth="1.6"
-        />
-        {/* 강화도(북서) */}
-        <path
-          d="M20 12 q16 -4 26 8 q6 12 -2 22 q-14 10 -28 2 q-8 -14 4 -32z"
-          fill={isDone('ch1_bluecarbon') ? '#D8C09A' : '#DDE2E4'}
-          stroke="#453527"
-          strokeWidth="1.6"
-        />
-        {/* 서해 섬들(연안·풀등) */}
-        <ellipse
-          cx="26"
-          cy="62"
-          rx="12"
-          ry="8"
-          fill={isDone('ch2_ocean') ? '#9FD8C4' : '#DDE2E4'}
-          stroke="#453527"
-          strokeWidth="1.6"
-        />
-        <ellipse cx="44" cy="76" rx="6" ry="4" fill={isDone('ch2_ocean') ? '#9FD8C4' : '#DDE2E4'} stroke="#453527" strokeWidth="1.4" />
-        {/* 영흥도(남) */}
-        <path
-          d="M62 78 q14 -6 24 4 q2 10 -10 14 q-16 2 -18 -8z"
-          fill={isDone('ch4_energy') ? '#F6E3A8' : '#DDE2E4'}
-          stroke="#453527"
-          strokeWidth="1.6"
-        />
-      </svg>
-
-      {/* 챕터 거점 마커 */}
-      {CHAPTERS.map((c) => {
-        const done = isDone(c.id);
-        return (
-          <button
-            key={c.id}
-            type="button"
-            onClick={() => onOpen(c.id)}
-            className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center"
-            style={{ left: `${c.map.x}%`, top: `${c.map.y}%` }}
-            aria-label={`Chapter ${c.no} ${c.title} 시작하기`}
-          >
-            <span
-              className={`flex h-11 w-11 items-center justify-center rounded-full border-3 border-mulgomi-line text-xl shadow-popsm sm:h-12 sm:w-12 ${
-                done ? 'bg-mulgomi-ear' : 'bg-white animate-idlebounce'
-              }`}
-            >
-              <span aria-hidden="true">{done ? '✓' : c.emoji}</span>
-            </span>
-            <span className="mt-1 whitespace-nowrap rounded-md border-2 border-mulgomi-line bg-white px-1.5 text-[10px] font-black sm:text-xs">
-              Ch{c.no} {c.title}
-            </span>
-          </button>
-        );
-      })}
     </div>
   );
 }

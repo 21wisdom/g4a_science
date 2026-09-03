@@ -3,10 +3,11 @@ import React from 'react';
 /**
  * 물곰이 마스코트 (인천과학문화거점센터 공식 캐릭터, 사용 허가 확인 완료)
  *
- * 공식 PNG 에셋 3종을 표정·포즈별로 사용한다(src/assets/mascot/).
- *   mulgomi-idle.png   두 손을 든 기본 포즈      → 평상시 안내
- *   mulgomi-talk.png   한 손을 든 놀란 표정      → 설명·힌트·오답 리액션
- *   mulgomi-happy.png  손을 흔드는 웃는 표정      → 정답·완료·축하
+ * 공식 PNG 에셋 4종을 표정·포즈별로 사용한다(src/assets/mascot/).
+ *   mulgomi-idle.png   두 손을 든 기본 포즈           → 평상시 안내
+ *   mulgomi-talk.png   한 손을 든 놀란 표정           → 스토리 인트로, 오답 리액션
+ *   mulgomi-teach.png  안경 쓰고 지시봉을 든 포즈      → 개념 브리핑, 힌트, 해설
+ *   mulgomi-happy.png  손을 흔드는 웃는 표정          → 정답·완료·축하
  *
  * 파일을 교체하거나 새 포즈를 추가할 때는 같은 폴더에 `mulgomi-<mood>.png` 형식으로
  * 넣기만 하면 되고, 코드 수정은 필요 없다. 에셋이 하나도 없으면 기획서 9.1절 팔레트로
@@ -34,8 +35,12 @@ function assetFor(mood) {
   const chain = {
     idle: ['idle', 'talk', 'happy'],
     happy: ['happy', 'idle', 'talk'],
-    think: ['talk', 'idle', 'happy'],
-    sad: ['talk', 'idle', 'happy'],
+    talk: ['talk', 'teach', 'idle'],
+    // 설명·힌트는 선생님 포즈로
+    teach: ['teach', 'talk', 'idle'],
+    think: ['teach', 'talk', 'idle'],
+    // 아쉬운 표정 에셋이 없어 놀란 표정 + 좌우 흔들림으로 표현한다
+    sad: ['talk', 'teach', 'idle'],
     none: ['idle', 'talk', 'happy'],
   }[mood] || ['idle'];
   for (const key of chain) if (ASSETS[key]) return ASSETS[key];
@@ -46,6 +51,8 @@ const MOOD_ANIM = {
   idle: 'animate-idlebounce',
   happy: 'animate-jump',
   sad: 'animate-shakeh',
+  talk: 'animate-idlebounce',
+  teach: 'animate-idlebounce',
   think: 'animate-idlebounce',
   none: '',
 };
