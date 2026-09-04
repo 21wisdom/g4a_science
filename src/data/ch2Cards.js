@@ -75,8 +75,9 @@ export const CH2_CARDS = [
   },
   {
     id: 'c7',
+    scene: 'estuary-tidalflat',
     title: '강물이 바다로 흘러드는 곳의 진흙 벌판',
-    clue: '강에서 실려 온 고운 흙이 쌓였고, 소금기는 중간 정도예요.',
+    clue: '강물이 굽이쳐 바다로 흘러가고, 그 옆에 고운 흙이 넓게 쌓였어요. 염생식물이 자라고 물새가 먹이를 찾고 있습니다.',
     // 하구이면서 갯벌이기도 한 장면 → 두 답 모두 정답
     answers: ['estuary', 'tidalflat'],
     evidence: ['soil', 'water', 'life'],
@@ -85,8 +86,9 @@ export const CH2_CARDS = [
   },
   {
     id: 'c8',
-    title: '해수욕장 옆으로 이어진 산책로',
-    clue: '사람들이 걷고 있고, 모래사장에 파라솔이 있습니다.',
+    scene: 'coast-beach',
+    title: '사람들이 물놀이하는 모래 해변',
+    clue: '넓은 모래사장에서 사람들이 놀고 있고, 바다에는 안전 부표가 떠 있어요. 뒤로는 건물과 도로가 보입니다.',
     answers: ['coast'],
     evidence: ['human', 'soil'],
     lowTier: false,
@@ -94,8 +96,9 @@ export const CH2_CARDS = [
   },
   {
     id: 'c9',
-    title: '섬 둘레의 얕은 바다에 놓인 양식장',
-    clue: '섬 가까이 바다에 김·굴 양식 시설이 줄지어 있습니다.',
+    scene: 'island-farm',
+    title: '섬 앞 얕은 바다의 김 양식장',
+    clue: '섬 앞 얕은 바다에 김을 기르는 그물이 끝없이 줄지어 있어요. 사람이 바다를 이용해 먹을거리를 기르는 곳입니다.',
     // 섬주변해역이면서 사람이 이용하는 연안이기도 하다
     answers: ['island', 'coast'],
     evidence: ['human', 'water'],
@@ -104,8 +107,9 @@ export const CH2_CARDS = [
   },
   {
     id: 'c10',
-    title: '밀물이 들어오자 사라진 모래벌판',
-    clue: '조금 전까지 걸어 다니던 모래벌판이 물에 잠겼어요.',
+    scene: 'pooldeung-tide',
+    title: '바다 한가운데 길게 뻗은 모래톱',
+    clue: '섬에서 떨어진 바다 한가운데에 모래벌판이 길게 드러나 있어요. 밀물이 들어오면 이 모래벌판은 물에 잠깁니다.',
     answers: ['pooldeung'],
     evidence: ['water', 'soil'],
     lowTier: false,

@@ -4,7 +4,7 @@
 // 학습 내용에 해당하는 문구는 전부 이 파일에 모아 둔다.
 // 여기 적힌 과학적 서술은 워크북 본문에 근거해야 하며, 검수 대상이다.
 
-import { OCEAN_SPACE_TYPES, INCHEON, HEATWAVE, SOLAR_OPTIMAL } from './datasets';
+import { OCEAN_SPACE_TYPES, INCHEON, HEATWAVE, SOLAR_OPTIMAL, POPULATION_ANCHORS } from './datasets';
 
 export const CHAPTER_CONTENT = {
   ch1_bluecarbon: {
@@ -114,7 +114,7 @@ export const CHAPTER_CONTENT = {
       {
         emoji: '📈',
         title: '추세선과 예측',
-        body: '점으로 찍은 데이터의 흐름을 하나의 직선으로 나타낸 것이 추세선입니다. 이 선을 미래로 늘이면 예측값을 얻을 수 있어요. 다만 예측은 "지금 흐름이 계속된다면"이라는 가정 위에 있습니다.',
+        body: '점으로 찍은 데이터의 흐름을 하나의 직선으로 나타낸 것이 추세선입니다. 이 선을 미래로 늘이면 예측값을 얻을 수 있어요. 실제 데이터는 오르내리기 때문에 모든 점이 선 위에 놓이지는 않습니다. 인천 인구도 2020년에 한 번 줄었다가 다시 늘었어요.',
         highlight: '예측은 사실이 아니라 근거 있는 추정이에요.',
       },
       {
@@ -126,7 +126,11 @@ export const CHAPTER_CONTENT = {
     ],
       facts: [
       { emoji: '🥵', value: `${HEATWAVE[0].days}일 → ${HEATWAVE[1].days}일`, label: '인천 폭염일수(1970년대 → 2010년대)' },
-      { emoji: '👥', value: '295만 → 303만', label: '인천 인구(2019 → 2025)' },
+      {
+        emoji: '👥',
+        value: `${POPULATION_ANCHORS.start.value}만 → ${POPULATION_ANCHORS.end.value}만`,
+        label: '인천 인구(2019 → 2025, 주민등록인구)',
+      },
       {
         emoji: '🌊',
         value: `${INCHEON.seaLevelRise2050.incheon}cm`,

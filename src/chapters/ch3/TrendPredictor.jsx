@@ -3,7 +3,7 @@ import { Panel, Verdict } from '../../components/UI';
 import TTSButton from '../../components/TTSButton';
 import Mascot from '../../components/Mascot';
 import useGameStore from '../../store/useGameStore';
-import { POPULATION, POPULATION_ANCHORS, INCHEON } from '../../data/datasets';
+import { POPULATION, POPULATION_ANCHORS, INCHEON, NATIONAL_PEAK_YEAR } from '../../data/datasets';
 import sfx from '../../lib/sound';
 
 /**
@@ -42,17 +42,17 @@ export default function TrendPredictor({ chapterId }) {
 const W = 560;
 const H = 300;
 const PAD = { l: 52, r: 18, t: 18, b: 40 };
-const X_MIN = 2019;
+const X_MIN = 2016;
 const X_MAX = 2030;
-const Y_MIN = 290;
-const Y_MAX = 312;
+const Y_MIN = 292;
+const Y_MAX = 310;
 
 const sx = (year) => PAD.l + ((year - X_MIN) / (X_MAX - X_MIN)) * (W - PAD.l - PAD.r);
 const sy = (val) => H - PAD.b - ((val - Y_MIN) / (Y_MAX - Y_MIN)) * (H - PAD.t - PAD.b);
 const invY = (py) => Y_MIN + ((H - PAD.b - py) / (H - PAD.t - PAD.b)) * (Y_MAX - Y_MIN);
 
 function ChartFrame({ children }) {
-  const yTicks = [290, 295, 300, 305, 310];
+  const yTicks = [292, 296, 300, 304, 308];
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full touch-none select-none" role="img">
       <rect x="0" y="0" width={W} height={H} fill="#FFFFFF" />
@@ -64,7 +64,7 @@ function ChartFrame({ children }) {
           </text>
         </g>
       ))}
-      {POPULATION.map((p) => (
+      {POPULATION.filter((p) => p.year % 2 === 0).map((p) => (
         <text
           key={p.year}
           x={sx(p.year)}
@@ -87,8 +87,8 @@ function ChartFrame({ children }) {
       </text>
       {/* 예측 구간 표시 */}
       <line
-        x1={sx(2025)}
-        x2={sx(2025)}
+        x1={sx(POPULATION[POPULATION.length - 1].year)}
+        x2={sx(POPULATION[POPULATION.length - 1].year)}
         y1={PAD.t}
         y2={H - PAD.b}
         stroke="#7D5BA6"
@@ -101,8 +101,8 @@ function ChartFrame({ children }) {
           key={p.year}
           cx={sx(p.year)}
           cy={sy(p.value)}
-          r={p.measured ? 8 : 5}
-          fill={p.measured ? '#F4EC8E' : '#FFFFFF'}
+          r={p.citedInWorkbook ? 8 : 5}
+          fill={p.citedInWorkbook ? '#F4EC8E' : '#FFFFFF'}
           stroke="#453527"
           strokeWidth="3"
         />
@@ -161,10 +161,13 @@ function HighPredictor({ chapterId }) {
       right={<TTSButton text="추세선의 양쪽 손잡이를 움직여 2030년 인천 인구를 예측해 보세요." />}
     >
       <p className="mb-3 font-bold leading-relaxed">
-        노란 점은 워크북에 제시된 실제 수치({POPULATION_ANCHORS.start.year}년 약{' '}
-        {POPULATION_ANCHORS.start.value}만 명 → {POPULATION_ANCHORS.end.year}년 약{' '}
-        {POPULATION_ANCHORS.end.value}만 명)입니다. 흰 점은 두 수치 사이를 학습용으로 이어 만든
-        값이에요. 보라색 선(추세선)을 끌어 2030년을 예측해 보세요.
+        {POPULATION[0].year}~{POPULATION[POPULATION.length - 1].year}년 인천의 실제 인구입니다
+        (주민등록인구). 노란 점은 워크북에 나온 두 해예요. 보라색 선(추세선)을 끌어 2030년을
+        예측해 보세요.
+      </p>
+      <p className="mb-3 rounded-xl bg-white p-3 text-sm font-bold">
+        잘 보면 {NATIONAL_PEAK_YEAR + 1}년에 인구가 한 번 <b>줄었다가</b> 다시 늘어납니다. 실제
+        데이터는 이렇게 오르내리기 때문에, 추세선은 그 흐름을 하나의 직선으로 요약한 것일 뿐이에요.
       </p>
 
       <div ref={svgWrap} className="card-pop bg-white p-2">
@@ -223,11 +226,11 @@ function HighPredictor({ chapterId }) {
       {/* 터치가 어려운 환경을 위한 대체 입력 */}
       <div className="mt-3 grid gap-2 sm:grid-cols-2">
         <label className="font-bold">
-          왼쪽 끝(2019년): <b className="tabular-nums">{left.toFixed(1)}</b>만 명
+          왼쪽 끝({X_MIN}년): <b className="tabular-nums">{left.toFixed(1)}</b>만 명
           <input type="range" min={Y_MIN} max={Y_MAX} step={0.1} value={left} onChange={(e) => setLeft(Number(e.target.value))} />
         </label>
         <label className="font-bold">
-          오른쪽 끝(2030년): <b className="tabular-nums">{right.toFixed(1)}</b>만 명
+          오른쪽 끝({X_MAX}년): <b className="tabular-nums">{right.toFixed(1)}</b>만 명
           <input type="range" min={Y_MIN} max={Y_MAX} step={0.1} value={right} onChange={(e) => setRight(Number(e.target.value))} />
         </label>
       </div>
@@ -261,7 +264,8 @@ function HighPredictor({ chapterId }) {
           </p>
           <p className="mt-2">
             단, 이 값은 <b>“지금까지의 흐름이 그대로 이어진다면”</b>이라는 가정 위의 추정입니다.
-            정책이나 사회 변화가 생기면 결과는 달라질 수 있어요.
+            실제로 {NATIONAL_PEAK_YEAR + 1}년에는 인구가 줄기도 했어요. 정책이나 사회 변화가 생기면
+            결과는 달라질 수 있습니다.
           </p>
         </Verdict>
       )}
@@ -283,9 +287,9 @@ function LowPredictor({ chapterId }) {
       right={<TTSButton text="인천의 인구가 앞으로 늘어날까요, 줄어들까요?" />}
     >
       <p className="mb-3 font-bold leading-relaxed">
-        노란 점은 워크북에 나온 실제 숫자예요. {POPULATION_ANCHORS.start.year}년에는 약{' '}
+        인천에 사는 사람 수를 해마다 세어 점으로 찍었어요. {POPULATION_ANCHORS.start.year}년에는 약{' '}
         {POPULATION_ANCHORS.start.value}만 명, {POPULATION_ANCHORS.end.year}년에는 약{' '}
-        {POPULATION_ANCHORS.end.value}만 명이었어요.
+        {POPULATION_ANCHORS.end.value}만 명이에요.
       </p>
       <div className="card-pop bg-white p-2">
         <ChartFrame>
@@ -328,8 +332,8 @@ function LowPredictor({ chapterId }) {
       </div>
       {pick && (
         <Verdict correct={(pick === 'up') === up}>
-          점들이 오른쪽 위로 올라가고 있어요. 인천의 인구는 늘어나는 흐름이에요. 초록 점선처럼 이
-          흐름이 이어진다면 2030년에는 지금보다 더 많아질 거예요.
+          점들이 오른쪽 위로 올라가고 있어요. 중간에 한 번 줄어든 해도 있지만, 전체적으로는 늘어나는
+          흐름이에요. 초록 점선처럼 이 흐름이 이어진다면 2030년에는 지금보다 더 많아질 거예요.
         </Verdict>
       )}
     </Panel>

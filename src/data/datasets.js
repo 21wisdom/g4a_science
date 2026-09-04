@@ -17,25 +17,45 @@ export const HEATWAVE = [
   { decade: '2020년대', days: 16.9, note: '16.9일 이상' },
 ];
 
-// 워크북 3-5 — 인천 인구 변화(2019년 약 295만 → 2025년 약 303만)
-// 워크북에 제시된 값은 양 끝 2개 연도뿐이므로, 그 사이 연도는 학습용으로
-// 선형 보간한 값임을 화면에 명시한다(없는 통계를 지어내지 않기 위함).
-export const POPULATION_ANCHORS = { start: { year: 2019, value: 295 }, end: { year: 2025, value: 303 } };
+// 인천광역시·전국 주민등록인구 (KOSIS「행정구역(시군구)별, 성별 인구수」, 행정안전부)
+//
+// 워크북 3-5는 2019년 약 295만 → 2025년 약 303만 두 값만 제시하지만,
+// 검수 과정에서 KOSIS 실측 연도별 수치로 교체했다(2026-09 검수 결정 03).
+// 실제 값을 쓰면 2020년에 한 번 줄었다가 다시 늘어나는 흐름이 그대로 드러나고,
+// 전국은 2019년을 정점으로 줄어드는데 인천만 늘어난다는 대비도 보여줄 수 있다.
+//
+// value 단위는 만 명(소수 첫째 자리), persons는 원자료 그대로의 명 수다.
+const POP_RAW = [
+  [2016, 2943069, 51696216],
+  [2017, 2948542, 51778544],
+  [2018, 2954642, 51826059],
+  [2019, 2957026, 51849861],
+  [2020, 2942828, 51829023],
+  [2021, 2948375, 51638809],
+  [2022, 2967314, 51439038],
+  [2023, 2997410, 51325329],
+  [2024, 3021010, 51217221],
+  [2025, 3051961, 51117378],
+];
 
-export const POPULATION = (() => {
-  const { start, end } = POPULATION_ANCHORS;
-  const span = end.year - start.year;
-  const step = (end.value - start.value) / span;
-  return Array.from({ length: span + 1 }, (_, i) => {
-    const year = start.year + i;
-    const measured = i === 0 || i === span;
-    return {
-      year,
-      value: Number((start.value + step * i).toFixed(1)), // 단위: 만 명
-      measured, // true = 워크북 제시 수치, false = 학습용 선형 보간값
-    };
-  });
-})();
+export const POPULATION = POP_RAW.map(([year, persons, national]) => ({
+  year,
+  persons,
+  value: Number((persons / 10000).toFixed(1)),
+  national,
+  nationalValue: Number((national / 10000).toFixed(1)),
+  // 워크북 3-5가 직접 제시한 두 해
+  citedInWorkbook: year === 2019 || year === 2025,
+}));
+
+// 워크북이 제시한 두 기준 연도
+export const POPULATION_ANCHORS = {
+  start: POPULATION.find((p) => p.year === 2019),
+  end: POPULATION.find((p) => p.year === 2025),
+};
+
+// 전국은 2019년을 정점으로 줄어드는 중 — 인천과의 대비를 보여줄 때 쓴다
+export const NATIONAL_PEAK_YEAR = 2019;
 
 // 워크북 1-5 — 강열감량법 3개 지점(조상대/조간대/조하대)
 // W1: 젖은 흙, W2: 건조 후, W3: 태운 후 / 유기물 함량(%) = (W2-W3)/W2*100

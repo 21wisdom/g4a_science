@@ -38,22 +38,26 @@
 
 ## 현재 들어와 있는 삽화
 
+Ch2 판별 카드 10장과 챕터 배너 5종이 모두 채워졌습니다.
+
 | 파일 | 원본 | 쓰이는 곳 |
 |---|---|---|
-| `ocean-tidalflat.webp` | 인천갯벌 | Ch2 갯벌 카드 + Ch1 챕터 배너(별칭) |
-| `ocean-island.webp` | 인천섬(승봉도) | Ch2 섬주변해역 카드 + Ch2 챕터 배너(별칭) |
-| `ocean-coast.webp` | 인천연안부두 | Ch2 연안지역 카드 |
-| `ocean-estuary.webp` | 인천한강하구 | Ch2 하구지역 카드 |
-| `ocean-pooldeung.webp` | 대이작도 풀등 | Ch2 풀등 카드 |
-| `ocean-openocean.webp` | 인천 먼바다 | Ch2 먼바다 카드 |
-| `chapter-ch3_data.webp` | 인천기상대 | Ch3 챕터 배너 |
-| `concept-wind.webp` | 해상풍력단지(덴마크) | Ch4 풍력 실험 + Ch4 챕터 배너(별칭) |
-| `concept-solar.webp` | 학교 옥상 태양광 | Ch4 태양광 실험 + Ch5 챕터 배너(별칭) |
-
-Ch2 해양공간 6종과 5개 챕터 배너가 모두 채워졌습니다.
+| `ocean-estuary.webp` | 인천한강하구 | c1 하구지역 |
+| `ocean-tidalflat.webp` | 인천갯벌 | c2 갯벌 + Ch1 배너(별칭) |
+| `ocean-coast.webp` | 인천연안부두 | c3 연안지역 |
+| `ocean-pooldeung.webp` | 대이작도 풀등 | c4 풀등 |
+| `ocean-island.webp` | 인천섬(승봉도) | c5 섬주변해역 + Ch2 배너(별칭) |
+| `ocean-openocean.webp` | 인천 먼바다 | c6 먼바다 |
+| `ocean-estuary-tidalflat.webp` | 하구 갯벌 노을 | c7 하구지역 **+** 갯벌 |
+| `ocean-coast-beach.webp` | 해수욕장 | c8 연안지역 |
+| `ocean-island-farm.webp` | 김 양식장 | c9 섬주변해역 **+** 연안지역 |
+| `ocean-pooldeung-tide.webp` | 풀등 항공 | c10 풀등 |
+| `chapter-ch3_data.webp` | 인천기상대 | Ch3 배너 |
+| `concept-wind.webp` | 해상풍력단지(덴마크) | Ch4 풍력 실험 + Ch4 배너(별칭) |
+| `concept-solar.webp` | 학교 옥상 태양광 | Ch4 태양광 실험 + Ch5 배너(별칭) |
 
 한 장을 두 자리에서 쓸 때는 파일을 복사하지 않고 `src/lib/illustrations.js`의 `ALIAS`에
-매핑합니다.
+매핑합니다. 카드의 `scene` 값이 `ocean-<scene>.webp` 파일명과 대응합니다.
 
 ## 캡션 — 장소 오표기 방지
 
