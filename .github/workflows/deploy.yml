@@ -1,0 +1,61 @@
+# GitHub Pages 배포
+#
+# 기본 브랜치에 푸시하면 빌드 후 Pages로 배포한다.
+# 배포 주소: https://21wisdom.github.io/g4a_science/
+# 하위 경로로 서비스되므로 VITE_BASE로 base 경로를 넘겨야 자산 URL이 맞는다.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [claude/web-app-development-k3tuw6]
+  # 저장소 Actions 탭에서 수동 실행도 가능하게 둔다
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 배포는 한 번에 하나만. 진행 중인 배포는 취소하지 않고 기다린다.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: 의존성 설치
+        run: npm ci
+
+      - name: 빌드
+        env:
+          VITE_BASE: /g4a_science/
+        run: npm run build
+
+      - name: Pages 설정
+        # enablement: true — 저장소에서 Pages가 아직 켜져 있지 않으면 켠다
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

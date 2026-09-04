@@ -20,14 +20,31 @@ npm run preview  # 빌드 결과 미리보기
 
 Node 18 이상이 필요합니다. 백엔드·데이터베이스·로그인은 사용하지 않습니다.
 
-### 배포
+### 배포 — GitHub Pages
 
-정적 사이트이므로 Vercel / Netlify / GitHub Pages 무료 티어로 배포할 수 있습니다.
-GitHub Pages처럼 하위 경로에 배포할 때는 base 경로를 지정합니다.
+`.github/workflows/deploy.yml`이 기본 브랜치 푸시마다 빌드 후 Pages로 배포합니다.
+빌드가 GitHub 러너에서 돌기 때문에 별도 호스팅 계정이나 토큰이 필요 없습니다.
+
+- 배포 주소: **https://21wisdom.github.io/g4a_science/**
+- 하위 경로로 서비스되므로 워크플로가 `VITE_BASE=/g4a_science/`를 넘깁니다.
+- 수동 배포는 저장소 Actions 탭 → `Deploy to GitHub Pages` → Run workflow.
+
+첫 배포가 권한 문제로 실패하면 저장소 **Settings → Pages → Source**를 `GitHub Actions`로
+한 번만 바꾼 뒤 워크플로를 다시 실행하면 됩니다.
+
+다른 곳에 올릴 때도 정적 사이트이므로 Vercel / Netlify 무료 티어로 충분하며,
+하위 경로에 배포하는 경우에만 base를 지정하면 됩니다.
 
 ```bash
-VITE_BASE=/g4a_science/ npm run build
+VITE_BASE=/원하는경로/ npm run build   # 도메인 루트에 올릴 때는 생략
 ```
+
+### 배포 후 확인할 것
+
+1. **GA4 데이터 스트림** — 측정 ID `G-8XTNBN16KG`의 스트림 URL을 실제 배포 주소로 갱신합니다.
+   (GA4 관리 → 데이터 스트림 → 웹 스트림 → 스트림 URL)
+2. **설문 링크** — 인증서 화면 하단과 설정 화면의 Google Form 버튼이 열리는지 확인합니다.
+3. **실제 기기 확인** — 교실 태블릿 가로모드와 휴대폰에서 한 챕터를 끝까지 진행해 봅니다.
 
 ---
 
