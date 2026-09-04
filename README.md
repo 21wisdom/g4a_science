@@ -29,8 +29,10 @@ Node 18 이상이 필요합니다. 백엔드·데이터베이스·로그인은 �
 - 하위 경로로 서비스되므로 워크플로가 `VITE_BASE=/g4a_science/`를 넘깁니다.
 - 수동 배포는 저장소 Actions 탭 → `Deploy to GitHub Pages` → Run workflow.
 
-첫 배포가 권한 문제로 실패하면 저장소 **Settings → Pages → Source**를 `GitHub Actions`로
-한 번만 바꾼 뒤 워크플로를 다시 실행하면 됩니다.
+**최초 1회만 필요한 설정**: 저장소 **Settings → Pages → Build and deployment → Source**를
+`GitHub Actions`로 지정해야 합니다. Actions 토큰 권한으로는 Pages 사이트를 만들 수 없어
+(`Resource not accessible by integration`) 저장소 소유자가 한 번 켜 주어야 하며,
+그 뒤로는 푸시할 때마다 자동 배포됩니다.
 
 다른 곳에 올릴 때도 정적 사이트이므로 Vercel / Netlify 무료 티어로 충분하며,
 하위 경로에 배포하는 경우에만 base를 지정하면 됩니다.
