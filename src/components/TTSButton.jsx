@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { speak, stopSpeaking, ttsSupported } from '../lib/tts';
 
 /**
- * 문항 읽어주기 버튼 (기획서 9장 접근성 — 전 문항 배치, 저학년 기본 제공).
+ * 문항 읽어주기 버튼 (기획서 9장 접근성 — 전 문항 배치, 어린이 모드 기본 제공).
  * Web Speech API 미지원 브라우저에서는 렌더링하지 않는다.
  */
 export default function TTSButton({ text, label = '읽어주기', className = '' }) {

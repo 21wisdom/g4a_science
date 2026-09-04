@@ -201,7 +201,7 @@ export default function SolarSim({ chapterId }) {
 function LowSolarQ({ angle }) {
   const soundOn = useGameStore((s) => s.soundOn);
   const [pick, setPick] = useState(null);
-  const best = 30; // 저학년 선택지 0/30/60 중 최적각에 가장 가까운 값
+  const best = 30; // 어린이 모드 선택지 0/30/60 중 최적각에 가장 가까운 값
   const q = '세 각도 중 전기가 가장 많이 나오는 각도는 몇 도였나요?';
   return (
     <div>

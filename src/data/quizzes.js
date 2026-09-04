@@ -1,5 +1,6 @@
 // 기획서 7.1 퀴즈 엔진용 문항 데이터.
-// 모든 문항은 워크북 본문 개념·수치에 근거하며, 학년군(low/high)별로 표현 난이도만 분기한다.
+// 모든 문항은 워크북 본문 개념·수치에 근거하며, 난이도 모드(low/high)별로 표현 난이도만 분기한다.
+// low = 어린이, high = 청소년 및 성인 (표기는 src/config.js의 MODE_LABELS)
 // 문항 타입: multiple_choice | ox | numeric_input | multi_select
 
 export const QUIZZES = {

@@ -5,6 +5,7 @@ import TTSButton from './TTSButton';
 import QuizEngine from './QuizEngine';
 import DiscussionPanel from './DiscussionPanel';
 import useGameStore from '../store/useGameStore';
+import { modeLabel } from '../config';
 import { getQuiz } from '../data/quizzes';
 import { DISCUSSIONS, SELF_CHECKS } from '../data/discussions';
 import { BADGES, CHAPTER_MAIN_BADGE } from '../data/chapters';
@@ -84,7 +85,7 @@ export default function ChapterLayout({ chapter, story, briefing, experiments = 
           {sdgList(chapter.sdgs).map((s) => (
             <SdgBadge key={s.no} sdg={s} />
           ))}
-          <span className="chip">{isLow ? '3~4학년' : '5~6학년'}</span>
+          <span className="chip">{modeLabel(gradeMode, 'short')}</span>
         </div>
       </header>
 

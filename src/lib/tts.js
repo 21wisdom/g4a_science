@@ -32,7 +32,7 @@ export function speak(text, { rate = 0.95 } = {}) {
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(String(text));
     u.lang = 'ko-KR';
-    u.rate = rate; // 초등 저학년 대상: 기본 속도보다 약간 느리게
+    u.rate = rate; // 어린이 모드 대상: 기본 속도보다 약간 느리게
     const v = pickKoreanVoice();
     if (v) u.voice = v;
     window.speechSynthesis.speak(u);

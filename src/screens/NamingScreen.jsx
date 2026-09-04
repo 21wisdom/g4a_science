@@ -68,7 +68,7 @@ export default function NamingScreen() {
           탐험 시작하기 →
         </button>
         <button type="button" className="btn-soft" onClick={() => go('grade')}>
-          ← 학년 다시 고르기
+          ← 모드 다시 고르기
         </button>
       </div>
     </div>

@@ -29,7 +29,7 @@ export default function App() {
   const profile = useGameStore((s) => s.current());
   const go = useGameStore((s) => s.go);
 
-  // 저학년 모드에서는 본문 폰트를 한 단계 키운다(기획서 9장 타이포그래피)
+  // 어린이 모드에서는 본문 폰트를 한 단계 키운다(기획서 9장 타이포그래피)
   useEffect(() => {
     document.body.classList.toggle('grade-low', profile?.gradeMode === 'low');
   }, [profile?.gradeMode]);

@@ -3,7 +3,7 @@ import { Panel } from '../components/UI';
 import useGameStore from '../store/useGameStore';
 import { CHAPTERS } from '../data/chapters';
 import { ttsSupported } from '../lib/tts';
-import CONFIG from '../config';
+import CONFIG, { modeLabel, MODE_LABELS } from '../config';
 import track from '../lib/analytics';
 
 /**
@@ -24,14 +24,14 @@ export default function SettingsScreen() {
 
   const exportCsv = () => {
     // 기획서 15장 — 개인 식별 없이 집계용 학습 데이터를 CSV로 내보낸다.
-    const rows = [['프로필', '학년모드', '챕터', '완료여부', '퀴즈점수', '퀴즈문항수', '실험시도횟수', '자가진단체크']];
+    const rows = [['프로필', '모드', '챕터', '완료여부', '퀴즈점수', '퀴즈문항수', '실험시도횟수', '자가진단체크']];
     profiles.forEach((p) => {
       CHAPTERS.forEach((c) => {
         const pr = p.progress?.[c.id];
         const trials = Object.values(pr?.experimentTrials || {}).reduce((a, b) => a + b, 0);
         rows.push([
           p.displayName,
-          p.gradeMode,
+          modeLabel(p.gradeMode),
           c.title,
           pr?.completed ? 'Y' : 'N',
           pr?.quizScore ?? '',
@@ -59,9 +59,9 @@ export default function SettingsScreen() {
         <h1 className="text-xl font-black sm:text-2xl">⚙️ 설정</h1>
       </header>
 
-      <Panel title="학년 모드">
+      <Panel title="난이도 모드">
         <p className="mb-3 font-bold">
-          현재: <b>{profile?.gradeMode === 'low' ? '3~4학년' : '5~6학년'}</b> 모드
+          현재: <b>{modeLabel(profile?.gradeMode)}</b> 모드
           {gradeLocked && ' (잠김)'}
         </p>
         <div className="flex flex-wrap gap-2">
@@ -71,7 +71,7 @@ export default function SettingsScreen() {
             onClick={() => setGradeMode('low')}
             disabled={gradeLocked}
           >
-            🌱 3~4학년
+            {MODE_LABELS.low.emoji} {MODE_LABELS.low.name}
           </button>
           <button
             type="button"
@@ -79,14 +79,14 @@ export default function SettingsScreen() {
             onClick={() => setGradeMode('high')}
             disabled={gradeLocked}
           >
-            🚀 5~6학년
+            {MODE_LABELS.high.emoji} {MODE_LABELS.high.name}
           </button>
           <button type="button" className="btn-soft" onClick={() => setGradeLocked(!gradeLocked)}>
-            {gradeLocked ? '🔓 잠금 풀기' : '🔒 학년 잠그기(교사용)'}
+            {gradeLocked ? '🔓 잠금 풀기' : '🔒 모드 잠그기(교사용)'}
           </button>
         </div>
         <p className="mt-3 text-sm font-bold text-mulgomi-line/70">
-          같은 챕터를 두 모드로 비교해 보며 학습할 수도 있어요.
+          같은 챕터를 두 모드로 비교해 보며 학습할 수도 있어요. 두 모드는 다루는 내용이 같고 표현과 조작 난이도만 다릅니다.
         </p>
       </Panel>
 
@@ -127,10 +127,10 @@ export default function SettingsScreen() {
         <ul className="grid list-disc gap-2 pl-5 font-bold leading-relaxed">
           <li>
             수업 활용: 챕터는 자유 순서로 진행할 수 있어 모둠별로 다른 챕터를 동시에 운영할 수
-            있습니다. 챕터당 소요 시간은 저학년 5~8분, 고학년 10~15분입니다.
+            있습니다. 챕터당 소요 시간은 어린이 모드 5~8분, 청소년·성인 모드 10~15분입니다.
           </li>
           <li>
-            개인정보: 이름(별명)과 학년 외 어떤 정보도 수집하지 않으며, 모든 기록은 이 기기의
+            개인정보: 이름(별명) 외 어떤 정보도 수집하지 않으며, 모든 기록은 이 기기의
             브라우저 저장소에만 남습니다. 기기를 공유할 때는 프로필 슬롯을 나눠 쓰세요.
           </li>
           <li>
@@ -158,7 +158,7 @@ export default function SettingsScreen() {
       </Panel>
 
       <p className="mt-6 text-center text-xs font-bold text-mulgomi-line/60">
-        {CONFIG.appName} v{CONFIG.version} · {CONFIG.organizer} · 마스코트 물곰이
+        {CONFIG.appName} v{CONFIG.version} · {CONFIG.credits}
       </p>
     </div>
   );

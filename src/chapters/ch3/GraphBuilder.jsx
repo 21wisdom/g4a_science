@@ -9,8 +9,8 @@ import { isNumericAnswerCorrect } from '../../lib/grading';
 
 /**
  * 미니게임 1 — 그래프 빌더 (워크북 3-4 인천 폭염일수)
- * 저학년: 막대를 직접 세워 값을 맞추고 "가장 더운 시대" 고르기
- * 고학년: 평균·증가율 계산 + 축을 자른 그래프와 정직한 그래프 비교(데이터 리터러시 핵심)
+ * 어린이 모드: 막대를 직접 세워 값을 맞추고 "가장 더운 시대" 고르기
+ * 청소년·성인 모드: 평균·증가율 계산 + 축을 자른 그래프와 정직한 그래프 비교(데이터 리터러시 핵심)
  */
 const MAX_DAYS = 20;
 
@@ -19,7 +19,7 @@ export default function GraphBuilder({ chapterId }) {
   return isLow ? <LowGraphBuilder chapterId={chapterId} /> : <HighGraphBuilder chapterId={chapterId} />;
 }
 
-/* ── 저학년: 막대 세우기 + 비교 ─────────────────────────────────────── */
+/* ── 어린이 모드: 막대 세우기 + 비교 ─────────────────────────────────────── */
 function LowGraphBuilder({ chapterId }) {
   const logTrial = useGameStore((s) => s.logExperimentTrial);
   const soundOn = useGameStore((s) => s.soundOn);
@@ -120,7 +120,7 @@ function LowGraphBuilder({ chapterId }) {
   );
 }
 
-/* ── 고학년: 평균·증가율 계산 + 축 왜곡 비교 ─────────────────────────── */
+/* ── 청소년·성인 모드: 평균·증가율 계산 + 축 왜곡 비교 ─────────────────────────── */
 function HighGraphBuilder({ chapterId }) {
   const logTrial = useGameStore((s) => s.logExperimentTrial);
   const awardBadge = useGameStore((s) => s.awardBadge);

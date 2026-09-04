@@ -5,7 +5,7 @@ import useGameStore from '../store/useGameStore';
 import IncheonMap from '../components/IncheonMap';
 import { CHAPTERS, BADGES } from '../data/chapters';
 import { sdgList } from '../data/sdgs';
-import CONFIG from '../config';
+import CONFIG, { modeLabel } from '../config';
 
 /**
  * 인천 지도 기반 허브 월드(기획서 5.2)
@@ -34,7 +34,7 @@ export default function HubMap() {
               {profile?.avatar} {profile?.displayName} 대원
             </p>
             <p className="text-sm font-bold text-mulgomi-line/70">
-              {isLow ? '3~4학년 모드' : '5~6학년 모드'} · 배지 {badgeCount}개
+              {modeLabel(profile?.gradeMode, 'short')} 모드 · 배지 {badgeCount}개
             </p>
           </div>
         </div>
@@ -143,7 +143,7 @@ export default function HubMap() {
       </div>
 
       <p className="mt-6 text-center text-xs font-bold text-mulgomi-line/60">
-        {CONFIG.organizer} · 마스코트 물곰이 · 진행 기록은 이 기기에만 저장됩니다
+        {CONFIG.credits} · 진행 기록은 이 기기에만 저장됩니다
       </p>
     </div>
   );

@@ -13,7 +13,7 @@ import { isNumericAnswerCorrect } from '../../lib/grading';
  * 미니게임 1 — 블루카본 실험실 (워크북 1-5 강열감량법)
  *   채취(W₁ 젖은 흙) → 건조(W₂) → 연소(W₃)
  *   유기물 함량(%) = (W₂ − W₃) ÷ W₂ × 100
- * 저학년: 결과를 막대로 비교만 / 고학년: 공식을 직접 계산해 입력
+ * 어린이 모드: 결과를 막대로 비교만 / 청소년·성인 모드: 공식을 직접 계산해 입력
  */
 export const organicMatter = (w2, w3) => ((w2 - w3) / w2) * 100;
 
@@ -294,7 +294,7 @@ function Cellv({ label, v, on }) {
   );
 }
 
-/** 저학년: 계산 없이 비교·선택 */
+/** 어린이 모드: 계산 없이 비교·선택 */
 function LowInterpretation({ results }) {
   const [pick, setPick] = useState(null);
   const all = Object.keys(results).length === 3;
@@ -349,7 +349,7 @@ function LowInterpretation({ results }) {
   );
 }
 
-/** 고학년: 공식을 직접 적용해 계산 */
+/** 청소년·성인 모드: 공식을 직접 적용해 계산 */
 function HighInterpretation({ sample, phase }) {
   const [val, setVal] = useState('');
   const [res, setRes] = useState(null);

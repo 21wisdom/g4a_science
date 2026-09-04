@@ -10,7 +10,7 @@ import sfx from '../../lib/sound';
 
 /**
  * 미니게임 — 해양공간 판별 카드 소팅 (워크북 2-3)
- * 저학년: 4장, 유형 설명 1줄 / 고학년: 10장, 근거 태그 복수 선택 + 짧은 서술
+ * 어린이 모드: 4장, 유형 설명 1줄 / 청소년·성인 모드: 10장, 근거 태그 복수 선택 + 짧은 서술
  * 두 유형이 공존 가능한 카드는 두 답 모두 정답 처리(워크북 "하나의 정답이 아니어도 됨" 반영)
  */
 export default function SpaceSorting({ chapterId }) {
@@ -22,8 +22,8 @@ export default function SpaceSorting({ chapterId }) {
 
   const cards = useMemo(() => (isLow ? CH2_CARDS.filter((c) => c.lowTier) : CH2_CARDS), [isLow]);
 
-  // 저학년은 실제로 정답이 되는 유형만 보기로 제시한다(검수 결정 04).
-  // 한 번도 정답이 될 수 없는 보기를 늘려 두면 저학년에게 불필요한 인지 부담만 준다.
+  // 어린이 모드은 실제로 정답이 되는 유형만 보기로 제시한다(검수 결정 04).
+  // 한 번도 정답이 될 수 없는 보기를 늘려 두면 어린이 모드에게 불필요한 인지 부담만 준다.
   const spaceTypes = useMemo(() => {
     if (!isLow) return OCEAN_SPACE_TYPES;
     const used = new Set(cards.flatMap((c) => c.answers));

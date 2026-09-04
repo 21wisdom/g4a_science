@@ -8,8 +8,8 @@ import sfx from '../../lib/sound';
 
 /**
  * 미니게임 2 — 미래예측 시뮬레이터 (워크북 3-5 인구·해수면)
- * 고학년: 추세선을 직접 끌어 2030년 인구를 예측하고 실제 추세와 오차 비교
- * 저학년: 늘어날지 줄어들지 방향만 예측
+ * 청소년·성인 모드: 추세선을 직접 끌어 2030년 인구를 예측하고 실제 추세와 오차 비교
+ * 어린이 모드: 늘어날지 줄어들지 방향만 예측
  * + 해수면 상승 비교(인천 4.0cm vs 지구 평균 3.6cm)
  */
 
@@ -117,7 +117,7 @@ function ChartFrame({ children }) {
   );
 }
 
-/* ── 고학년: 추세선 직접 그리기 ────────────────────────────────────── */
+/* ── 청소년·성인 모드: 추세선 직접 그리기 ────────────────────────────────────── */
 function HighPredictor({ chapterId }) {
   const logTrial = useGameStore((s) => s.logExperimentTrial);
   const awardBadge = useGameStore((s) => s.awardBadge);
@@ -273,7 +273,7 @@ function HighPredictor({ chapterId }) {
   );
 }
 
-/* ── 저학년: 방향만 예측 ───────────────────────────────────────────── */
+/* ── 어린이 모드: 방향만 예측 ───────────────────────────────────────────── */
 function LowPredictor({ chapterId }) {
   const logTrial = useGameStore((s) => s.logExperimentTrial);
   const soundOn = useGameStore((s) => s.soundOn);

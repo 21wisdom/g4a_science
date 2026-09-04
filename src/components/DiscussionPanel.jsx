@@ -103,7 +103,7 @@ export default function DiscussionPanel({ chapterId, config, onSaved }) {
         </div>
       )}
 
-      {/* 저학년: 이모지로 마음 표현 / 고학년: 1~2문장 서술 */}
+      {/* 어린이 모드: 이모지로 마음 표현 / 청소년·성인 모드: 1~2문장 서술 */}
       <div className="mt-4">
         <p className="mb-2 font-bold">{isLow ? config.lowPrompt : config.highPrompt}</p>
         {isLow ? (

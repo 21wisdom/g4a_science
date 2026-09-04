@@ -3,6 +3,7 @@ import Mascot from '../components/Mascot';
 import { Panel } from '../components/UI';
 import useGameStore from '../store/useGameStore';
 import { CHAPTERS } from '../data/chapters';
+import { modeLabel } from '../config';
 
 /** 프로필 슬롯 선택(기획서 10.2 — 교실에서 한 기기를 여러 학생이 사용) */
 export default function ProfilesScreen() {
@@ -43,7 +44,7 @@ export default function ProfilesScreen() {
                     <span className="flex-1">
                       <span className="block text-lg font-black">{p.displayName}</span>
                       <span className="block text-sm font-bold text-mulgomi-line/70">
-                        {p.gradeMode === 'low' ? '3~4학년' : '5~6학년'} · 챕터 {doneCount}/
+                        {modeLabel(p.gradeMode, 'short')} · 챕터 {doneCount}/
                         {CHAPTERS.length} 완료
                       </span>
                     </span>

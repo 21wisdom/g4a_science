@@ -8,13 +8,13 @@
   }
   body {
     @apply bg-[#F7FBFF] text-mulgomi-line font-sans;
-    /* 저학년 가독성: 본문 최소 16px, 저학년 모드는 root class로 18px 승격(기획서 9장) */
+    /* 어린이 모드 가독성: 본문 최소 16px, 어린이 모드는 root class로 18px 승격(기획서 9장) */
     font-size: 16px;
     line-height: 1.6;
     margin: 0;
     -webkit-tap-highlight-color: transparent;
   }
-  /* 저학년 모드 전역 타이포 확대 */
+  /* 어린이 모드 전역 타이포 확대 */
   body.grade-low {
     font-size: 18px;
   }

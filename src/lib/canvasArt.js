@@ -256,14 +256,14 @@ export async function drawProjectCard(data) {
   ctx.fillText(`탐험대원: ${data.name || '이름'}`, 72, H - 92);
   ctx.textAlign = 'right';
   ctx.font = font(20, 500);
-  ctx.fillText(`${data.date} · ${CONFIG.organizer}`, W - 72, H - 88);
+  ctx.fillText(`${data.date} · ${CONFIG.credits}`, W - 72, H - 88);
   ctx.textAlign = 'left';
 
   return canvas.toDataURL('image/png');
 }
 
 /* ── 최종 인증서 ───────────────────────────────────────────────────── */
-export async function drawCertificate({ name, gradeLabel, date, score, total, badges = [] }) {
+export async function drawCertificate({ name, modeLabel, date, score, total, badges = [] }) {
   await ready();
   await loadMascot();
   const W = 1240;
@@ -330,7 +330,7 @@ export async function drawCertificate({ name, gradeLabel, date, score, total, ba
   ctx.font = font(24, 700);
   ctx.fillStyle = PALETTE.sea;
   ctx.fillText(
-    `학년군 ${gradeLabel} · 최종 통합 퀴즈 ${score}/${total} · 획득 배지 ${badges.length}개`,
+    `${modeLabel} 모드 · 최종 통합 퀴즈 ${score}/${total} · 획득 배지 ${badges.length}개`,
     W / 2,
     632,
   );
@@ -346,7 +346,7 @@ export async function drawCertificate({ name, gradeLabel, date, score, total, ba
   ctx.font = font(26, 700);
   ctx.fillText(date, W / 2, 772);
   ctx.font = font(24, 900);
-  ctx.fillText(CONFIG.organizer, W / 2, 812);
+  ctx.fillText(CONFIG.developer, W / 2, 812);
 
   drawMulgomi(ctx, 148, 700, 0.85);
   drawMulgomi(ctx, W - 148, 700, 0.85, true);

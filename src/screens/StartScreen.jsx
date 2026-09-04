@@ -17,7 +17,7 @@ export default function StartScreen() {
         <p className="mt-2 font-bold text-mulgomi-line/70">{CONFIG.appSubtitle}</p>
         <p className="mt-4 rounded-2xl border-3 border-mulgomi-line bg-white p-4 font-bold leading-relaxed shadow-pop">
           인천 바다와 도시 곳곳을 탐험하며, <b>실제 데이터로 실험하고 예측하는</b> SDGs 과학 탐정
-          게임이에요. 초등 3~6학년 누구나 할 수 있어요.
+          게임이에요. 어린이부터 어른까지 누구나 할 수 있어요.
         </p>
 
         <div className="mt-6 grid gap-3">
@@ -47,9 +47,9 @@ export default function StartScreen() {
         </div>
 
         <p className="mt-6 text-xs font-bold leading-relaxed text-mulgomi-line/60">
-          이름과 학년 외 어떤 개인정보도 수집하지 않아요. 기록은 이 기기 안에만 저장됩니다.
+          이름 외 어떤 개인정보도 수집하지 않아요. 기록은 이 기기 안에만 저장됩니다.
           <br />
-          {CONFIG.organizer} · 마스코트 물곰이
+          {CONFIG.credits}
         </p>
       </div>
     </div>

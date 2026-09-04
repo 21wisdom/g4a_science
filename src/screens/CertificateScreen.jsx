@@ -4,7 +4,7 @@ import { Panel } from '../components/UI';
 import useGameStore from '../store/useGameStore';
 import { drawCertificate, downloadDataUrl } from '../lib/canvasArt';
 import { BADGES, CHAPTERS } from '../data/chapters';
-import CONFIG from '../config';
+import CONFIG, { modeLabel } from '../config';
 import track from '../lib/analytics';
 
 /** 최종 인증서 발급 + 설문 안내(기획서 6장 Ch5 / 17.1절) */
@@ -32,7 +32,7 @@ export default function CertificateScreen() {
     try {
       const dataUrl = await drawCertificate({
         name: name.trim() || '탐험대원',
-        gradeLabel: isLow ? '3~4학년' : '5~6학년',
+        modeLabel: modeLabel(profile?.gradeMode),
         date: new Date().toLocaleDateString('ko-KR', {
           year: 'numeric',
           month: 'long',
